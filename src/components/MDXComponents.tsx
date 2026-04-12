@@ -57,6 +57,12 @@ export function Callout({ type = "info", title, children }: CalloutProps) {
   );
 }
 
+interface TableProps {
+  headers?: string[];
+  rows?: (string | React.ReactNode)[][];
+  caption?: string;
+}
+
 export function Table({ headers = [], rows = [], caption }: TableProps) {
   return (
     <div className="my-8 overflow-hidden rounded-xl border border-[var(--border)] shadow-sm">
