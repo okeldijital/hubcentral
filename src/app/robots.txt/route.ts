@@ -1,20 +1,14 @@
-import { MetadataRoute } from "next";
+import { NextResponse } from 'next/server'
 
-export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL 
-    ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '') 
-    : "https://hub.okeldijital.africa";
+export async function GET() {
+  const robotsTxt = `User-agent: *
+Allow: /
 
-  return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-      disallow: [
-        "/api/",
-        "/_next/",
-        "/private/"
-      ],
+Sitemap: https://hub.okeldijital.africa/sitemap.xml`
+
+  return new NextResponse(robotsTxt, {
+    headers: {
+      'Content-Type': 'text/plain',
     },
-    sitemap: `${baseUrl}/sitemap.xml`,
-  };
+  })
 }
