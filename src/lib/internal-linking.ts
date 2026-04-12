@@ -14,17 +14,17 @@ export function getRelatedPosts(currentSlug: string, limit = 3): Array<{
   
   if (!currentPost) return [];
   
-  const currentTags = new Set(currentPost.frontmatter.tags.map(tag => tag.toLowerCase()));
+  const currentTags = new Set((currentPost.frontmatter.tags || []).map(tag => tag.toLowerCase()));
   
   const related = getAllPosts()
     .filter(post => 
       post.slug !== currentSlug && 
-      post.frontmatter.tags.some(tag => currentTags.has(tag.toLowerCase()))
+      (post.frontmatter.tags || []).some(tag => currentTags.has(tag.toLowerCase()))
     )
     .sort((a, b) => {
       // Sort by number of shared tags (descending)
-      const aShared = a.frontmatter.tags.filter(tag => currentTags.has(tag.toLowerCase())).length;
-      const bShared = b.frontmatter.tags.filter(tag => currentTags.has(tag.toLowerCase())).length;
+      const aShared = (a.frontmatter.tags || []).filter(tag => currentTags.has(tag.toLowerCase())).length;
+      const bShared = (b.frontmatter.tags || []).filter(tag => currentTags.has(tag.toLowerCase())).length;
       return bShared - aShared;
     })
     .slice(0, limit)

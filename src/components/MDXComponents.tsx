@@ -57,13 +57,7 @@ export function Callout({ type = "info", title, children }: CalloutProps) {
   );
 }
 
-interface TableProps {
-  headers: string[];
-  rows: (string | React.ReactNode)[][];
-  caption?: string;
-}
-
-export function Table({ headers, rows, caption }: TableProps) {
+export function Table({ headers = [], rows = [], caption }: TableProps) {
   return (
     <div className="my-8 overflow-hidden rounded-xl border border-[var(--border)] shadow-sm">
       <div className="overflow-x-auto">
@@ -75,7 +69,7 @@ export function Table({ headers, rows, caption }: TableProps) {
           )}
           <thead className="bg-[var(--surface-1)] text-[var(--text-primary)]">
             <tr>
-              {headers.map((header, i) => (
+              {headers?.map((header, i) => (
                 <th
                   key={i}
                   className="border-b border-[var(--border)] px-4 py-3 text-left font-bold"
@@ -86,9 +80,9 @@ export function Table({ headers, rows, caption }: TableProps) {
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--border)] bg-[var(--background)]">
-            {rows.map((row, i) => (
+            {rows?.map((row, i) => (
               <tr key={i} className="hover:bg-[var(--surface-1)]/50 transition-colors">
-                {row.map((cell, j) => (
+                {row?.map((cell, j) => (
                   <td key={j} className="px-4 py-3 text-[var(--text-secondary)]">
                     {cell}
                   </td>
@@ -132,11 +126,11 @@ export function MDXImage({ src, alt, width = 800, height = 450, caption, priorit
   );
 }
 
-export function FAQ({ items }: { items: { question: string; answer: string }[] }) {
+export function FAQ({ items = [] }: { items?: { question: string; answer: string }[] }) {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: items.map((item) => ({
+    mainEntity: items?.map((item) => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: {
@@ -157,7 +151,7 @@ export function FAQ({ items }: { items: { question: string; answer: string }[] }
           Frequently Asked Questions
         </div>
         <div className="divide-y divide-[var(--border)] rounded-xl border border-[var(--border)] bg-[var(--surface-1)] overflow-hidden">
-          {items.map((item, i) => (
+          {items?.map((item, i) => (
             <details
               key={i}
               className="group p-5 summary-marker-hide"
@@ -234,7 +228,7 @@ export function AffiliateBox({ title, desc, url, cta = "Learn More", price }: { 
   );
 }
 
-export function ProCon({ pros, cons }: { pros: string[]; cons: string[] }) {
+export function ProCon({ pros = [], cons = [] }: { pros?: string[]; cons?: string[] }) {
   return (
     <div className="my-8 grid gap-4 sm:grid-cols-2">
       <div className="rounded-xl border border-green-200 bg-green-50/50 dark:border-green-900/30 dark:bg-green-900/10 p-5">
@@ -243,7 +237,7 @@ export function ProCon({ pros, cons }: { pros: string[]; cons: string[] }) {
           Pros
         </h4>
         <ul className="space-y-2 list-none p-0 m-0">
-          {pros.map((pro, i) => (
+          {pros?.map((pro, i) => (
              <li key={i} className="flex items-start gap-2 text-sm text-green-900 dark:text-green-100 p-0 m-0">
                <span className="mt-1 shrink-0 text-green-600 dark:text-green-500">+</span>
                <span>{pro}</span>
@@ -257,7 +251,7 @@ export function ProCon({ pros, cons }: { pros: string[]; cons: string[] }) {
           Cons
         </h4>
         <ul className="space-y-2 list-none p-0 m-0">
-          {cons.map((con, i) => (
+          {cons?.map((con, i) => (
              <li key={i} className="flex items-start gap-2 text-sm text-red-900 dark:text-red-100 p-0 m-0">
                <span className="mt-1 shrink-0 text-red-600 dark:text-red-500">-</span>
                <span>{con}</span>
