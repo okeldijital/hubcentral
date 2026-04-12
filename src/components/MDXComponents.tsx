@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import MidArticleAd from "@/components/MidArticleAd";
 
 interface CalloutProps {
   type?: "info" | "warning" | "success" | "error";
