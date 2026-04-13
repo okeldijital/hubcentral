@@ -1,4 +1,5 @@
 import React from "react";
+import Script from "next/script";
 
 const SidebarAd = () => {
   return (
@@ -6,14 +7,22 @@ const SidebarAd = () => {
       <span className="block mb-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">
         Advertisement
       </span>
-      <div className="mx-auto h-[250px] w-full max-w-[300px] bg-[var(--surface-2)] rounded flex flex-col items-center justify-center opacity-50 border border-dashed border-[var(--border)]">
-        <svg className="h-8 w-8 text-[var(--text-faint)] mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-        </svg>
-        <p className="text-[var(--text-muted)] text-sm font-medium">
-          AdSense 300x250
-        </p>
+      <div className="mx-auto flex justify-center overflow-hidden min-h-[250px]">
+        {/* Real Adsense 300x250 Ad for Hub Central */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4055253888470166"
+          crossOrigin="anonymous"
+        />
+        <ins
+          className="adsbygoogle"
+          style={{ display: "inline-block", width: "300px", height: "250px" }}
+          data-ad-client="ca-pub-4055253888470166"
+          data-ad-slot="1592796223"
+        />
+        <Script id="sidebar-adsbygoogle-init">
+          {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+        </Script>
       </div>
     </aside>
   );
