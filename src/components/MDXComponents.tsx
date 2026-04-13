@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import MidArticleAd from "@/components/MidArticleAd";
+import { SidebarAd } from "@/components/Sidebar";
 
 interface CalloutProps {
   type?: "info" | "warning" | "success" | "error";
@@ -289,3 +290,6 @@ export function Step({ title, children, number }: { title: string; children: Rea
     </div>
   );
 }
+
+// Export SidebarAd for use in MDX
+export { SidebarAd } from "@/components/Sidebar";

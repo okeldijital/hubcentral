@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getPostBySlug, getPostSlugs, getAllPosts, getReadingTime } from "@/lib/mdx";
 import { Sidebar } from "@/components/Sidebar";
-import { Callout, Table, FAQ, Checklist, MDXImage, ProCon, AffiliateBox, StepList, Step } from "@/components/MDXComponents";
+import { Callout, Table, FAQ, Checklist, MDXImage, ProCon, AffiliateBox, StepList, Step, SidebarAd } from "@/components/MDXComponents";
 import MidArticleAd from "@/components/MidArticleAd";
 import { ComparisonTable } from "@/components/ComparisonTable";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -26,6 +26,7 @@ const components = {
   StepList,
   Step,
   MidArticleAd,
+  SidebarAd,
   ComparisonTable,
 };
 
