@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import MidArticleAd from "@/components/MidArticleAd";
-import { SidebarAd } from "@/components/Sidebar";
+import SidebarAd from "@/components/SidebarAd";
 
 interface CalloutProps {
   type?: "info" | "warning" | "success" | "error";
@@ -291,5 +291,19 @@ export function Step({ title, children, number }: { title: string; children: Rea
   );
 }
 
-// Export SidebarAd for use in MDX
-export { SidebarAd } from "@/components/Sidebar";
+// MDX components mapping object for global use
+export const components = {
+  Callout,
+  Table,
+  Image: MDXImage,
+  FAQ,
+  Checklist,
+  AffiliateBox,
+  ProCon,
+  StepList,
+  Step,
+  MidArticleAd,
+  SidebarAd,
+};
+
+export { SidebarAd, MidArticleAd };
