@@ -1,7 +1,18 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import Script from "next/script";
 
 const SidebarAd = () => {
+  useEffect(() => {
+    try {
+      (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+      (window as any).adsbygoogle.push({});
+    } catch (e: any) {
+      console.error("AdSense error:", e.message);
+    }
+  }, []);
+
   return (
     <aside className="rounded-xl border border-[var(--border)] bg-[var(--surface-1)] p-5 text-center my-8">
       <span className="block mb-2 text-xs font-medium uppercase tracking-widest text-[var(--text-muted)]">
@@ -22,9 +33,6 @@ const SidebarAd = () => {
           data-ad-format="auto"
           data-full-width-responsive="true"
         />
-        <Script id="sidebar-adsbygoogle-init">
-          {`(adsbygoogle = window.adsbygoogle || []).push({});`}
-        </Script>
       </div>
     </aside>
   );
