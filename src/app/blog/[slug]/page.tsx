@@ -192,10 +192,13 @@ export default async function BlogPostPage({ params }: Props) {
               let adIndex = blocks.length;
               
               // Target around ~250-350 words for ad insertion
+              // BUT: Only if the user hasn't already manually inserted a <MidArticleAd /> in the MDX
+              const hasManualAd = post.content.includes("<MidArticleAd") || post.content.includes("{MidArticleAd");
+
               for (let i = 0; i < blocks.length; i++) {
                 wordCount += blocks[i].split(/\s+/).length;
                 // If we reach > 300 words and are reasonably centered, insert ad here
-                if (wordCount >= 300 && i < blocks.length - 2) {
+                if (!hasManualAd && wordCount >= 300 && i < blocks.length - 2) {
                   adIndex = i + 1;
                   break;
                 }

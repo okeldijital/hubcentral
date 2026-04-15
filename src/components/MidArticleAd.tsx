@@ -14,7 +14,7 @@ export default function MidArticleAd() {
 
   return (
     <div className="my-8 border border-dashed border-gray-300 dark:border-gray-700 rounded-xl p-4 text-center">
-      {/* Real Adsense In-Article Ad for Hub Central */}
+      {/* MidArticleAd-HubCentral */}
       <Script
         async
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4055253888470166"
