@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
     await transporter.sendMail({
       from: `"Hub Central" <${process.env.SMTP_USER}>`,
-      to: "okeldijital@gmail.com",
+      to: process.env.CONTACT_EMAIL || "info@okeldijital.africa",
       subject: `New Newsletter Signup: ${email}`,
       text: `Someone just subscribed to the newsletter.\n\nEmail: ${email}\nDate: ${new Date().toISOString()}`,
     });
