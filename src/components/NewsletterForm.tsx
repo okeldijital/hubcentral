@@ -21,17 +21,30 @@ export function NewsletterForm({
 }: NewsletterFormProps) {
   const [email, setEmail] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Thanks for subscribing, ${email}! We'll be in touch. For direct enquiries, email okeldijital@gmail.com`);
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (res.ok) {
+        alert(`Thanks for subscribing, ${email}! We'll be in touch.`);
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } catch {
+      alert("Failed to subscribe. Please try again.");
+    }
     setEmail("");
   };
 
   if (variant === "hero") {
     return (
-      <form 
+      <form
         onSubmit={handleSubmit}
-        className={`flex flex-col gap-3 sm:flex-row shadow-2xl shadow-black/20 rounded-xl bg-white p-1 ${className}`}
+        className={`flex flex-col gap-3 rounded-xl bg-white p-1 shadow-2xl shadow-black/20 sm:flex-row ${className}`}
       >
         <input
           type="email"
@@ -39,11 +52,11 @@ export function NewsletterForm({
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={`flex-1 rounded-lg border-none bg-transparent px-4 py-3 text-base focus:outline-none text-[#111110] ${inputClassName}`}
+          className={`flex-1 rounded-lg border-none bg-transparent px-4 py-3 text-base text-[#111110] focus:outline-none ${inputClassName}`}
         />
         <button
           type="submit"
-          className={`rounded-lg bg-black px-6 py-3.5 text-base font-semibold text-white hover:bg-zinc-800 transition-colors ${buttonClassName}`}
+          className={`rounded-lg bg-black px-6 py-3.5 text-base font-semibold text-white transition-colors hover:bg-zinc-800 ${buttonClassName}`}
         >
           {buttonText}
         </button>
@@ -53,10 +66,7 @@ export function NewsletterForm({
 
   if (variant === "inline") {
     return (
-      <form 
-        onSubmit={handleSubmit}
-        className={`flex flex-col gap-2 ${className}`}
-      >
+      <form onSubmit={handleSubmit} className={`flex flex-col gap-2 ${className}`}>
         <input
           type="email"
           placeholder={placeholder}
@@ -67,7 +77,7 @@ export function NewsletterForm({
         />
         <button
           type="submit"
-          className={`rounded-md bg-[var(--brand)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--brand-hover)] transition-colors ${buttonClassName}`}
+          className={`rounded-md bg-[var(--brand)] px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-[var(--brand-hover)] ${buttonClassName}`}
         >
           {buttonText}
         </button>
@@ -77,21 +87,21 @@ export function NewsletterForm({
 
   // Default block variant (used in pillars and sidebar)
   return (
-    <form 
+    <form
       onSubmit={handleSubmit}
-      className={`flex flex-col sm:flex-row gap-3 max-w-md mx-auto ${className}`}
+      className={`mx-auto flex max-w-md flex-col gap-3 sm:flex-row ${className}`}
     >
-      <input 
-        type="email" 
-        placeholder={placeholder} 
+      <input
+        type="email"
+        placeholder={placeholder}
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className={`flex-1 rounded-full px-6 py-4 text-black focus:outline-none focus:ring-2 focus:ring-black ${inputClassName}`}
       />
-      <button 
+      <button
         type="submit"
-        className={`rounded-full bg-black px-8 py-4 font-bold text-white hover:bg-gray-800 transition-transform active:scale-95 shadow-lg ${buttonClassName}`}
+        className={`rounded-full bg-black px-8 py-4 font-bold text-white shadow-lg transition-transform hover:bg-gray-800 active:scale-95 ${buttonClassName}`}
       >
         {buttonText}
       </button>
