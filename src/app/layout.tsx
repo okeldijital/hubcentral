@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 // Use SITE_URL env var or fallback, ensure no trailing slash
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL 
-  ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '') 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
+  ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")
   : "https://hub.okeldijital.africa";
 
 export const metadata: Metadata = {
@@ -43,14 +43,34 @@ export const metadata: Metadata = {
   },
 };
 
+const schemaData = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Hub Central",
+  url: baseUrl,
+  description: "Practical AI & WordPress guides for small teams in 2026",
+  publisher: {
+    "@type": "Organization",
+    name: "Hub Central",
+    url: baseUrl,
+    logo: {
+      "@type": "ImageObject",
+      url: `${baseUrl}/images/logo.png`,
+    },
+  },
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${geistMono.variable} h-full antialiased dark`}>
-      <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)] selection:bg-amber-200 selection:text-amber-900 dark:selection:bg-amber-800 dark:selection:text-amber-100">
+    <html lang="en" className={`${inter.variable} ${geistMono.variable} dark h-full antialiased`}>
+      <head>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaData }} />
+      </head>
+      <body className="flex min-h-full flex-col bg-[var(--background)] text-[var(--foreground)] selection:bg-amber-200 selection:text-amber-900 dark:selection:bg-amber-800 dark:selection:text-amber-100">
         <ReadingProgress />
         <Nav />
         <main className="flex-1">{children}</main>
