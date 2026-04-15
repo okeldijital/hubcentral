@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { siteMetadata } from "@/lib/siteMetadata";
 import { Nav } from "@/components/Nav";
@@ -69,6 +70,18 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${geistMono.variable} dark h-full antialiased`}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schemaData }} />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-PZWZ2WH48R"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-PZWZ2WH48R');
+          `}
+        </Script>
       </head>
       <body className="flex min-h-full flex-col bg-[var(--background)] text-[var(--foreground)] selection:bg-amber-200 selection:text-amber-900 dark:selection:bg-amber-800 dark:selection:text-amber-100">
         <ReadingProgress />
