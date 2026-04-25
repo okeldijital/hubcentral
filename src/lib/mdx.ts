@@ -2,7 +2,9 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
-const blogDirectory = path.join(process.cwd(), "src/content/blog");
+import { isPublished } from "./date";
+
+const blogDirectory = path.join(process.cwd(), "src/content/HubCentral Posts");
 
 export interface PostFrontmatter {
   title: string;
@@ -15,6 +17,7 @@ export interface PostFrontmatter {
   image?: string;
   author: string;
   draft?: boolean;
+  published?: boolean; // New field
   featured?: boolean; // New field
 }
 
@@ -69,7 +72,12 @@ export function getAllPosts(): Post[] {
   const slugs = getPostSlugs();
   const posts = slugs
     .map((slug) => getPostBySlug(slug))
-    .filter((post): post is Post => post !== null && post.frontmatter && !post.frontmatter.draft)
+    .filter((post): post is Post => 
+      post !== null && 
+      post.frontmatter && 
+      !post.frontmatter.draft &&
+      isPublished(post.frontmatter.date, post.frontmatter.published)
+    )
     .sort((a, b) => (new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()));
 
   return posts;
