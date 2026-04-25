@@ -11,7 +11,9 @@ import { siteMetadata } from "@/lib/siteMetadata";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { TableOfContents } from "@/components/TableOfContents";
 import { RelatedPosts } from "@/components/RelatedPosts";
+import { ShareButtons } from "@/components/ShareButtons";
 import { isPublished } from "@/lib/date";
+
 
 // Remove dynamic ="force-dynamic" to allow static generation from generateStaticParams
 
