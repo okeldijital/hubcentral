@@ -1,88 +1,350 @@
 ---
-title: WordPress Speed Optimization in 2026 – What Actually Works for Small Teams (Without Expensive Plugins)
-date: 2026-04-11
-lastmod: 2026-04-11
-summary: We reviewed what actually improves WordPress speed for small teams in 2026. Here are the practical, no-fluff techniques that deliver real results — without expensive plugins or developer help.
-tags:
-  - wordpress speed
-  - core web vitals
-  - wordpress optimization
-  - small teams
-  - "2026"
-image: /images/wordpress-speed-optimization-2026.png
-author: Okel Dijital Team
+title: 'WordPress Speed Optimization 2026: A Small-Team Checklist'
+date: '2026-10-16'
+lastmod: '2026-10-16'
+summary: 'A practical 2026 WordPress speed checklist for small teams: Core Web Vitals, TTFB, caching, images, plugins and CDN, fixed in the order that actually works.'
+tags: ['wordpress', 'wordpress speed', 'core web vitals', 'wordpress optimization', 'hosting', 'small teams', '2026']
+image: '/images/wordpress-speed-optimization-2026.png'
+author: 'Nkululeko Nkosi'
 ---
 
-**The single highest-impact thing you can do for WordPress speed in 2026 is fix your images first.**  
-Oversized, uncompressed images are still the biggest cause of slow load times on small-team sites — and they are completely free to fix.
+Most WordPress speed advice starts with a plugin.
 
-Most speed advice fails because it jumps straight to caching plugins and CDNs before the fundamentals are right. Caching a slow site only makes it a slightly faster slow site. The real gains come from working in the right order: server first, images second, caching third, code last.
+Install this caching tool, enable that optimisation toggle, run PageSpeed Insights again, and hope the number turns green. Sometimes it does. Often the site is still slow for the people who actually visit it, because the real bottleneck was never the thing the plugin touched.
+
+The more reliable approach is less exciting: **measure first, then fix problems in the order they constrain each other.** The server sets the floor. Caching decides how often that floor is hit. Images and scripts decide how much work the browser must do once the page arrives. A CDN decides how far everything has to travel.
+
+This checklist is written for small teams running WordPress without a dedicated performance engineer. It is an upgrade of our earlier guide, rewritten for 2026: Core Web Vitals now use INP rather than FID, WordPress core has taken over several jobs that used to need plugins, and some popular advice (including Cloudflare's old Auto Minify switch) no longer applies.
 
 <MidArticleAd />
 
-## The 5 Things That Actually Move the Needle in 2026
+## What "Fast" Actually Means in 2026
 
-### 1. Start With Your Host — Everything Else Depends on It
-No plugin or optimisation will rescue a site on a slow host. If your Time to First Byte (TTFB) is consistently high, you have a server problem.
+Before changing anything, agree on what you are measuring. "The site feels slow" and "PageSpeed says 54" are not the same problem.
 
-**What good looks like:** A well-configured host should deliver under 400–500ms TTFB.  
-**What to do:** Run your site through GTmetrix (free). If your TTFB is over 500ms, read our [Best WordPress Hosting for Small Teams in 2026](/best-wordpress-hosting-small-teams-2026) guide before touching anything else.
+Google's [Core Web Vitals](https://web.dev/articles/vitals) are the three metrics that matter most for real visitors:
 
-### 2. Fix Your Images — This Is Where Most Sites Lose
-Images still account for the majority of page weight on small-team WordPress sites.
+<table>
+  <thead>
+    <tr>
+      <th>Metric</th>
+      <th>What it measures</th>
+      <th>"Good" threshold</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>LCP</strong> (Largest Contentful Paint)</td>
+      <td>How quickly the main content appears</td>
+      <td>2.5 seconds or less</td>
+    </tr>
+    <tr>
+      <td><strong>INP</strong> (Interaction to Next Paint)</td>
+      <td>How quickly the page responds when someone taps, clicks or types</td>
+      <td>200 milliseconds or less</td>
+    </tr>
+    <tr>
+      <td><strong>CLS</strong> (Cumulative Layout Shift)</td>
+      <td>How much the layout jumps around while loading</td>
+      <td>0.1 or less</td>
+    </tr>
+  </tbody>
+</table>
 
-**Three things that matter:**
-- Use **WebP** format (WordPress 6.1+ does this automatically if your host supports it)
-- Never upload images wider than your content column (usually 1200–1400px)
-- Bulk-compress your media library with a good tool
+Three details matter more than most guides admit:
 
-We recommend **[Abate](https://tools.okeldijital.africa/abate)** (our own tool), ShortPixel, or Imagify — all of which run directly inside WordPress and deliver excellent compression with minimal quality loss.
+- **The targets apply at the 75th percentile of real page loads**, measured separately for mobile and desktop. A fast test on your office fibre connection does not prove much.
+- **INP replaced First Input Delay** as a Core Web Vital on [12 March 2024](https://web.dev/blog/inp-cwv-march-12). If a guide still tells you to optimise FID, it is out of date.
+- **Lab tools cannot measure INP.** Lighthouse (the engine behind the PageSpeed Insights score) has no real user to interact with the page, so it reports Total Blocking Time (TBT) as a proxy. TBT is useful for diagnosis, but it is not a Core Web Vital.
 
-**Before/after reality:** Fixing formats and compression on a typical homepage with 8 images often cuts 1.5–3MB of page weight.
+Time to First Byte (TTFB) is not a Core Web Vital either, but it is the most useful diagnostic for WordPress. It covers redirects, DNS lookup, connection setup and the time your server takes to start responding. Google's [TTFB guidance](https://web.dev/articles/ttfb) suggests that most sites aim for **0.8 seconds or less**, and treats anything above 1.8 seconds as poor. If TTFB is slow, everything after it starts late.
 
-### 3. Add a Caching Layer — But Keep It Simple
-Caching stores a static version of your pages so the server doesn’t rebuild them on every visit.
+Google says good Core Web Vitals align with what its [core ranking systems seek to reward](https://developers.google.com/search/docs/appearance/core-web-vitals). Speed will not rescue weak content, but it is part of the page experience that search and readers both judge.
 
-**What actually works for small teams:**
-- **WP Super Cache** – free and lightweight (good default)
-- **LiteSpeed Cache** – free and powerful if your host runs LiteSpeed (Hostinger does)
+### WordPress has real room to improve
 
-**What to avoid:** Stacking multiple caching plugins or buying a premium one when a free option will do the same job.
+This is not a niche problem. In the [HTTP Archive's 2025 Web Almanac](https://almanac.httparchive.org/en/2025/cms), only **45% of mobile WordPress sites** passed all three Core Web Vitals in July 2025 field data, among the lowest of the ten major CMS platforms measured. The same chapter notes that tightly managed platforms improved faster than extensible ones like WordPress, where themes, plugins and third-party integrations vary enormously.
 
-### 4. Cut Unnecessary Code — Plugins and Scripts
-Every plugin adds PHP code that runs on every page load.
+In other words, WordPress can be fast, but it is not fast by default. The difference comes from setup and discipline.
 
-**What to do:**
-- Deactivate any plugin you haven’t actively needed in the last 30 days
-- Replace heavy plugins with lighter alternatives
-- Defer non-critical scripts (most caching plugins can do this automatically)
+<figure className="my-8">
+  <img
+    src="/images/wordpress-speed-optimization-2026-stat-core-web-vitals.png"
+    alt="Bar graphic showing 45% of mobile WordPress sites pass Core Web Vitals, Web Almanac 2025"
+    width="2400"
+    height="1260"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
 
-### 5. Enable a CDN (Takes 10 Minutes, Lasts for Years)
-A Content Delivery Network serves your static files from servers close to each visitor.
+## Why Speed Matters More for South African and African Audiences
 
-**Best options for small teams:**
-- **Cloudflare Free tier** – best starting point
-- **BunnyCDN** – affordable paid option with excellent performance
+If most of your visitors are in South Africa or elsewhere on the continent, speed has a cost dimension that global guides rarely mention.
 
-**What to do:** Point your domain to Cloudflare and enable Auto Minify.
+**Many visitors are on mobile data, and it is paid for by the megabyte.** ICASA's [tariff analysis for July to December 2025](https://www.icasa.org.za/uploads/files/2025-26-FY-Q4-Bi-Annual-Tariff-Analysis-Report-For-Publication-23032026.pdf) puts the average price of a prepaid 1GB to 1.5GB data bundle at about R63 across mobile networks and virtual operators, and lists in-bundle rates of R0.06 to R0.08 per MB at the large networks (Cell C's standard 30-day 1GB bundle, at R85, sits at the top of that range at R0.08). The Web Almanac puts the [median mobile home page at 2.56 MB](https://almanac.httparchive.org/en/2025/page-weight). At those rates, one load of a median-weight page costs a prepaid visitor roughly 15 to 20 cents. That is small, but it is not nothing, and heavier pages ask more of the reader.
 
-## What Most Small Teams Waste Time On
-- Running database optimisation plugins weekly
-- Using heavy page builders and relying on their “performance modes”
-- Obsessing over PageSpeed Insights scores instead of real user metrics
-- Adding more caching when the host is the bottleneck
+**Distance still matters.** If your hosting server is in Europe or North America and your readers are in Durban or Johannesburg, every uncached request makes a long round trip before the first byte arrives. That travel time is part of TTFB.
 
-## Quick Win Checklist: What to Do Today
-- Run your site through GTmetrix and note your current TTFB
-- Compress your existing media library with [Abate](https://tools.okeldijital.africa/abate), ShortPixel or Imagify
-- Enable WebP conversion if it’s not already active
-- Install and configure a simple caching plugin
-- Deactivate any plugin you haven’t used in 30 days
-- Set up Cloudflare Free tier and enable Auto Minify
-- Re-test after each major change
+**There is local infrastructure to use.** Cloudflare, for example, lists [data centres in Johannesburg, Cape Town and Durban](https://www.cloudflare.com/network/). A CDN with nearby edge locations can serve cached files close to your readers even when your origin server is far away.
 
-**See also:** [Best WordPress Hosting for Small Teams in 2026](/best-wordpress-hosting-small-teams-2026)  
-**See also:** [Mapping Your Existing Workflow Before Using AI](/blog/mapping-your-existing-workflow-before-using-ai-2026)  
-**See also:** [A Step-by-Step AI Integration Checklist for Small Teams](/blog/ai-integration-checklist-for-small-teams-2026)
+The practical takeaway: test from a location near your actual audience, prioritise page weight, and choose hosting with your readers' geography in mind.
 
----
+### What the South African data says
+
+We have not yet run a controlled before/after test on a South African WordPress site, so we are not going to quote numbers we haven't measured. Here is what public data shows, with sources:
+
+- **Mobile Core Web Vitals are weaker in South Africa than in most of the 40 countries one analysis compared.** In an analysis of Google's Chrome UX Report (May 2026), [PageSpeed Matters](https://www.pagespeedmatters.com/resources/data-studies/website-speed-by-country) found that 21.8% of South African sites passed all three Core Web Vitals on mobile (35.7% on desktop). Loading (LCP) was the weakest metric: 30.1% of sites had good mobile LCP. This is a third-party analysis of CrUX data across all sites, not WordPress only.
+- **The network is often good; the distance to your server is not.** Ookla's [Speedtest Global Index](https://www.ookla.com/articles/mea-global-index-2025) put South Africa's median mobile download speed at 65.7 Mbps in December 2025. But a server in London or Frankfurt is roughly 155–172 ms away from Johannesburg on a data-centre-to-data-centre ping, and New York is over 230 ms ([Network Platforms latency matrix](https://latency.networkplatforms.co.za/), checked 10 October 2026). Every uncached request pays that round trip several times before the first byte arrives.
+- **Weight costs money.** ICASA's [July–December 2025 tariff analysis](https://www.icasa.org.za/uploads/files/2025-26-FY-Q4-Bi-Annual-Tariff-Analysis-Report-For-Publication-23032026.pdf) puts the average price of a 1–1.5GB prepaid bundle at about R63, with in-bundle rates of R0.06–R0.08 per MB at the large networks. At those rates, one median-weight mobile home page (2.56 MB) costs roughly 15–20 cents in data.
+
+**Measure your own site from where your readers are.** Run WebPageTest from a South African or nearby location on a mobile profile, record your Search Console Core Web Vitals report, and compare your cached and uncached TTFB. If you publish before/after numbers, record the date, location, device profile and number of runs next to them. We will publish our own test results here when we have them.
+
+## The Small-Team Speed Checklist (In the Right Order)
+
+The order matters. Optimising images on a site with a two-second server response will help, but it will not make the site fast. Work down the list and re-test after each stage.
+
+<figure className="my-8">
+  <img
+    src="/images/wordpress-speed-optimization-2026-speed-stack.png"
+    alt="Diagram of the nine WordPress speed stages in order: Step 0 baseline, 1 server, 2 page caching, 3 images, 4 plugin, theme and script weight, 5 CDN, 6 layout stability, 7 WordPress core features, 8 re-test and monitor"
+    width="2400"
+    height="2816"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)] max-w-xl"
+  />
+</figure>
+
+### Step 0: Record a Baseline Before You Change Anything
+
+Without a baseline you cannot tell whether a change helped, hurt or did nothing.
+
+**What to record:**
+
+- **Field data**, if you have it. [PageSpeed Insights](https://pagespeed.web.dev/) shows real-user Core Web Vitals from the Chrome UX Report at the top of the results, and Google Search Console's [Core Web Vitals report](https://support.google.com/webmasters/answer/9205520) groups your URLs by status. Low-traffic sites may not have enough data to show field results; that is normal.
+- **Lab data** for three page types: your home page, a typical article or service page, and your heaviest page (often a shop, gallery or landing page). Note LCP, TBT, CLS, TTFB and total page weight.
+- **Your current setup**: host and plan, PHP version, theme, caching plugin, CDN, and the number of active plugins.
+
+Run each lab test three times and use the middle result. Single runs vary.
+
+<figure className="my-8">
+  <img
+    src="/images/wordpress-speed-optimization-2026-baseline-worksheet.png"
+    alt="Speed baseline worksheet with columns for LCP, INP, CLS, TTFB, page weight and date"
+    width="2400"
+    height="2180"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+### Step 1: Fix the Server First
+
+No plugin can compensate for a slow server. If uncached TTFB is consistently high, start here.
+
+**Check:**
+
+- **PHP version.** WordPress.org now [recommends PHP 8.3 or greater](https://wordpress.org/about/requirements/). Newer PHP versions are generally faster and remain supported for longer; PHP 8.2 [reaches end of security support on 31 December 2026](https://www.php.net/supported-versions.php). Most hosts let you switch versions in the control panel, but test on staging first because old plugins can break.
+- **Server location.** Is the server close to most of your readers? For a South African audience, local or nearby hosting reduces the distance every uncached request travels.
+- **Plan resources.** Shared plans that were fine for a brochure site may struggle with WooCommerce, membership features or traffic spikes. Look for CPU or memory limits being hit in your hosting dashboard.
+- **Server-level caching.** Some hosts provide page caching and object caching (Redis or Memcached) at the server level. This is usually faster and more reliable than a plugin doing the same job.
+
+If your host is the problem, changing host is the optimisation. Our guide to [choosing the right WordPress hosting plan](/blog/how-to-choose-wordpress-hosting-plan-2026) covers what to check before you move, and our [hosting speed comparison](/blog/wordpress-hosting-speed-comparison-benchmarks-2026) explains how to test a host yourself.
+
+### Step 2: Add Page Caching (and Object Caching Where It Helps)
+
+WordPress builds most pages on request: PHP runs, the database is queried, and HTML is assembled. Page caching stores the finished HTML so the next visitor gets it without repeating that work. For most content sites, it is the single biggest TTFB improvement after the server itself.
+
+**What works for small teams:**
+
+- **Use your host's caching if it has one.** If your host runs LiteSpeed, the LiteSpeed Cache plugin integrates with the server. Many managed WordPress hosts include their own page cache.
+- **Otherwise, use one simple, well-maintained page caching plugin.** WP Super Cache is a lightweight, free default; there are several good alternatives.
+- **Use exactly one page cache.** Stacking two caching plugins, or a plugin on top of host caching, is a common cause of stale pages and odd bugs.
+- **Exclude dynamic pages.** Cart, checkout, account and logged-in pages should not be served from a shared page cache. Good caching tools do this for WooCommerce automatically; confirm it.
+
+**Object caching** stores the results of database queries in memory. It matters most for dynamic sites that cannot be fully page-cached (WooCommerce, membership sites, busy admin areas). The WordPress [caching handbook](https://developer.wordpress.org/advanced-administration/performance/cache/) explains the difference. If your host offers Redis or Memcached, ask them how to enable it properly.
+
+**How to confirm it works:** Test the same page twice. The second, cached response should have a noticeably lower TTFB. If it does not, the cache is not serving that page.
+
+### Step 3: Fix Images Properly
+
+Images are still the largest single content type on a typical page. The Web Almanac's 2025 data puts images at [911 KB of the median mobile home page](https://almanac.httparchive.org/en/2025/page-weight). They are also usually the LCP element, which makes them both the biggest weight problem and the biggest LCP opportunity.
+
+**The checklist:**
+
+- **Size images for where they appear.** Do not upload a 4,000-pixel photo for a 1,200-pixel content column. WordPress generates smaller versions and uses responsive `srcset` markup, but it starts from what you upload.
+- **Use modern formats where your host supports them.** WordPress has supported [WebP since 5.8](https://make.wordpress.org/core/2021/06/07/wordpress-5-8-adds-webp-support/) and [AVIF since 6.5](https://make.wordpress.org/core/2024/02/23/wordpress-6-5-adds-avif-support/), provided the server's image library supports them. Check **Tools → Site Health → Info → Media Handling**. Supported upload is not the same as automatic conversion; converting existing JPEGs usually needs a plugin or an optimisation service.
+- **Compress before or during upload.** [WordPress 7.1](https://wordpress.org/news/2026/08/mary-lou/), released in August 2026, moves image compression, resizing and thumbnail generation into the browser using a WebAssembly build of libvips, with [server-side fallback](https://make.wordpress.org/core/2026/07/22/client-side-media-processing-in-wordpress-7-1/) where the browser cannot do it. That should produce smaller files and fewer upload failures on shared hosting. For existing media libraries, a bulk optimisation plugin (ShortPixel and Imagify are common choices) is still the practical route. For one-off images, a browser-based compressor such as our own [Abate](https://tools.okeldijital.africa/abate) works before upload.
+- **Do not lazy-load the main image.** Lazy loading is right for images further down the page, but it delays the hero or featured image, which is often your LCP element. Since [WordPress 6.3](https://make.wordpress.org/core/2023/07/13/image-performance-enhancements-in-wordpress-6-3/), core tries to avoid lazy-loading images in the initial viewport and adds `fetchpriority="high"` to the likely LCP image. Some themes, page builders and optimisation plugins override that behaviour; check the result in the page source.
+- **Always set width and height.** Images without dimensions cause layout shift (CLS). WordPress adds them for images inserted through the editor; custom theme code and some builders do not.
+
+<figure className="my-8">
+  <img
+    src="/images/wordpress-speed-optimization-2026-image-sizing.png"
+    alt="Before and after comparison of an oversized image upload and a correctly sized WebP image"
+    width="2400"
+    height="1520"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+### Step 4: Cut Plugin, Theme and Script Weight
+
+Every active plugin can add PHP work on the server and CSS or JavaScript in the browser. The server cost affects TTFB; the browser cost affects LCP and especially INP.
+
+**Audit with evidence, not guesswork:**
+
+- **Install [Query Monitor](https://wordpress.org/plugins/query-monitor/) on staging** to see which plugins add slow database queries, HTTP calls or scripts. Remove it when you are done.
+- **Deactivate anything you no longer use.** Then check whether any remaining plugin duplicates a feature your theme, host or WordPress core already provides.
+- **Look hard at front-end scripts.** Sliders, animation libraries, chat widgets, social embeds, heatmaps, multiple analytics tags and some page-builder add-ons all add JavaScript that runs on the visitor's device. Long JavaScript tasks are the main cause of poor INP.
+- **Load scripts only where they are needed.** A contact-form script does not need to load on every blog post. Many optimisation plugins and some themes can disable assets per page.
+- **Be honest about third-party scripts, including ads.** Advertising, tracking and embed scripts are often the heaviest code on a page and are outside your control. If your site is ad-funded (as Hub Central is), keep the number of ad units deliberate rather than maximal and reserve space for them (see Step 6).
+
+**Your theme is part of this.** A lightweight theme gives every other optimisation a better starting point. Heavy multipurpose themes and page builders can still be fast, but they make it harder. See our [lightweight WordPress themes guide](/blog/best-lightweight-wordpress-themes-2026) if you are considering a change.
+
+### Step 5: Put a CDN in Front of the Site, and Know What It Caches
+
+A Content Delivery Network serves files from edge locations near your visitors. For South African audiences with a distant origin server, it can make a large difference to static files.
+
+**Two things most guides get wrong:**
+
+- **A CDN does not cache your HTML by default.** Cloudflare's [default cache behaviour](https://developers.cloudflare.com/cache/concepts/default-cache-behavior/) caches static files such as images, CSS and JavaScript, but **not HTML**. Your page itself still comes from your server unless you configure HTML caching. On Cloudflare that means a cache rule (with care around logged-in and dynamic pages) or [Automatic Platform Optimization](https://developers.cloudflare.com/automatic-platform-optimization/) for WordPress, which Cloudflare lists at [$5 per month on the Free plan](https://www.cloudflare.com/plans/) and includes on paid plans.
+- **Cloudflare's Auto Minify no longer exists.** Cloudflare [deprecated Auto Minify on 5 August 2024](https://developers.cloudflare.com/deprecations/), citing compression improvements as more effective. If an older guide (including the earlier version of this article) tells you to switch it on, skip that step. Minification, where useful, is handled by your caching or optimisation plugin.
+
+**What to do:** Start with a free CDN tier for static assets. If TTFB for distant visitors remains your main problem after server and page caching are fixed, then consider HTML edge caching.
+
+### Step 6: Stop the Layout From Jumping
+
+CLS is the Core Web Vital small teams most often break without noticing, because it rarely shows up on a fast office connection.
+
+**Common WordPress causes and fixes:**
+
+- **Images and embeds without dimensions.** Set width and height, or an aspect ratio, for every image, video and iframe.
+- **Ads and banners that load late.** Reserve fixed space for ad slots, cookie banners and announcement bars so content does not get pushed down when they appear.
+- **Web fonts swapping in.** Self-host fonts where practical, limit the number of weights you load, and use a font fallback with similar proportions.
+- **Content injected above existing content.** Newsletter bars and "related posts" widgets inserted at the top of an article after load are frequent offenders.
+
+### Step 7: Use What WordPress Core Already Does
+
+Several performance features that once needed plugins are now in core, which means fewer plugins to manage:
+
+- **Speculative loading** arrived in [WordPress 6.8](https://make.wordpress.org/core/2025/03/06/speculative-loading-in-6-8/). For logged-out visitors on sites with pretty permalinks, core uses the browser's Speculation Rules API to prefetch a page when someone starts clicking a link, making the next page feel faster. WordPress 7.1 lets hosts and site owners set speculative loading defaults through constants or environment variables.
+- **Image loading priorities** (Step 3) are handled by core since 6.3.
+- **The [Performance Lab](https://wordpress.org/plugins/performance-lab/) plugin**, maintained by the WordPress Performance Team, lets you try performance features before they reach core. Treat it as a testing ground: enable one feature at a time and measure.
+
+Before installing a performance plugin, check whether WordPress, your host or your existing caching tool already does the job.
+
+### Step 8: Re-test, Then Keep Monitoring
+
+Speed is not a one-off project. Plugins update, content gets heavier, and a new marketing script can undo months of work in an afternoon.
+
+- **Change one thing at a time** and re-test the same three pages.
+- **Make bigger changes on staging first**, especially PHP upgrades, caching changes and theme switches.
+- **Wait for field data.** Lab results change immediately; the Chrome UX Report uses a rolling 28-day window, so Search Console and PageSpeed field data take weeks to reflect improvements.
+- **Review the Core Web Vitals report monthly**, and after any significant site change.
+
+## What Small Teams Should Stop Wasting Time On
+
+- **Chasing a perfect PageSpeed score.** A 100 in the lab on a fast connection matters less than real users passing Core Web Vitals.
+- **Stacking optimisation plugins.** Two caching plugins, two image optimisers and an "all-in-one" speed suite usually conflict.
+- **Fixing images on a slow server first.** It helps, but TTFB still sets the floor.
+- **Weekly database "optimisation" runs.** Occasional cleanup of revisions and expired transients can help large sites; scheduled weekly runs rarely move real-user metrics.
+- **Trusting a page builder's "performance mode" without measuring.** Check the actual page weight and scripts.
+- **Following pre-2024 advice.** FID, Cloudflare Auto Minify and "WordPress converts everything to WebP automatically" are all outdated assumptions.
+
+## The WordPress Speed Checklist
+
+Use this as your working list. Re-test after each section.
+
+**Measure**
+
+- Record field data from PageSpeed Insights and Search Console (if available).
+- Record lab LCP, TBT, CLS, TTFB and page weight for three representative pages.
+- Note your host, PHP version, theme, caching setup, CDN and plugin count.
+
+**Server**
+
+- Run PHP 8.3 or newer (tested on staging first).
+- Confirm the server location suits your audience.
+- Check whether you are hitting plan resource limits.
+- Use server-level page and object caching if your host offers it.
+
+**Caching**
+
+- Use exactly one page cache.
+- Exclude cart, checkout, account and logged-in pages.
+- Confirm cached pages show a lower TTFB on repeat tests.
+- Enable object caching for WooCommerce or membership sites where available.
+
+**Images**
+
+- Resize images to their display size before upload.
+- Confirm WebP/AVIF support in Site Health and convert where useful.
+- Bulk-compress the existing media library.
+- Make sure the main above-the-fold image is not lazy-loaded.
+- Set width and height on all images and embeds.
+
+**Code**
+
+- Audit plugins with Query Monitor on staging.
+- Remove unused and duplicate plugins.
+- Reduce or defer non-essential third-party scripts.
+- Load feature scripts only on pages that need them.
+
+**Delivery**
+
+- Put a CDN in front of static assets.
+- Decide deliberately whether to cache HTML at the edge.
+- Remove any reliance on Cloudflare Auto Minify.
+
+**Stability and monitoring**
+
+- Reserve space for ads, banners and embeds.
+- Limit and self-host web fonts where practical.
+- Check the Search Console Core Web Vitals report monthly.
+
+<figure className="my-8">
+  <img
+    src="/images/wordpress-speed-optimization-2026-checklist-a4.png"
+    alt="One-page WordPress speed checklist graphic"
+    width="2480"
+    height="3508"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)] max-w-xl"
+  />
+</figure>
+
+[Download the printable checklist (PDF)](/downloads/wordpress-speed-optimization-2026-checklist-a4.pdf)
+
+## Frequently Asked Questions
+
+### What is a good page load time for a WordPress site in 2026?
+
+Focus on Core Web Vitals rather than a single load time. Aim for LCP of 2.5 seconds or less, INP of 200 milliseconds or less and CLS of 0.1 or less for at least 75% of real visits. As a diagnostic, Google suggests most sites aim for a Time to First Byte of 0.8 seconds or less.
+
+### Do I need a paid caching plugin?
+
+Usually not. Many hosts include server-level caching, and free plugins such as WP Super Cache or LiteSpeed Cache (on LiteSpeed servers) cover most small-team sites. What matters is running exactly one page cache and configuring exclusions correctly.
+
+### Will Cloudflare's free plan make my WordPress site fast?
+
+It helps with static files such as images, CSS and JavaScript, especially for visitors far from your server. By default it does not cache HTML, so a slow server still produces a slow first byte. HTML edge caching needs a cache rule or Cloudflare's Automatic Platform Optimization.
+
+### Why does PageSpeed Insights show a different score from my real users?
+
+The score is a lab test on a simulated device and network. The field data section shows what real Chrome users experienced over the previous 28 days. Field data is what Core Web Vitals assessments use, and low-traffic sites may not have enough of it to display.
+
+### Should I host my WordPress site in South Africa if my audience is local?
+
+If most visitors are in South Africa, a server closer to them reduces the distance every uncached request travels, which helps TTFB. Weigh that against the host's reliability, support, backups and price, and use a CDN with local edge locations either way.
+
+## What to Do Next
+
+Start with the baseline. Most small teams discover that one or two stages, usually the server and images, account for most of their slowness.
+
+If the server is the bottleneck, read [How to Choose the Right WordPress Hosting Plan for Your Small Team](/blog/how-to-choose-wordpress-hosting-plan-2026), then compare options in our [Best WordPress Hosting for Small Teams in 2026](/blog/best-wordpress-hosting-small-teams-2026) guide. To test hosts yourself, use the method in our [WordPress hosting speed comparison](/blog/wordpress-hosting-speed-comparison-benchmarks-2026).
+
+If you are adding AI plugins or tools to WordPress, measure their performance cost on staging first. Our guide to [using AI tools with WordPress safely](/blog/ai-tools-wordpress-2026-safe-guide) covers the testing approach.
+
+Speed work rarely ends with a single fix. It ends with a site that is measured, deliberately configured and checked often enough that problems are caught before your readers notice them.
