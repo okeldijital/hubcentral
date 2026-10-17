@@ -1,6 +1,6 @@
 import { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo";
 import Link from "next/link";
-import { siteMetadata } from "@/lib/siteMetadata";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { Sidebar } from "@/components/Sidebar";
 import { getAllPosts } from "@/lib/mdx";
@@ -11,11 +11,12 @@ export const metadata: Metadata = {
   title: "All Guides | Practical No-Hype Resources for Small Teams",
   description:
     "All practical guides for small teams in 2026 — WordPress, Hosting, AI Tools, Workflows and more. Honest, no-hype advice that actually delivers results for small businesses.",
+  alternates: { canonical: absoluteUrl("/guides") },
   openGraph: {
     title: "All Guides | Practical No-Hype Resources for Small Teams",
     description:
       "Practical, no-hype guides for small teams — WordPress, AI Tools, Hosting, and Workflows.",
-    url: `${siteMetadata.siteUrl}/guides`,
+    url: absoluteUrl("/guides"),
     type: "website",
   },
 };

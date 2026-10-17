@@ -1,6 +1,6 @@
 import { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo";
 import Link from "next/link";
-import { siteMetadata } from "@/lib/siteMetadata";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { Sidebar } from "@/components/Sidebar";
 import { getAllPosts } from "@/lib/mdx";
@@ -11,11 +11,12 @@ export const metadata: Metadata = {
   title: "Editorial | Practical No-Hype Guides for Small Teams",
   description:
     "Practical, no-hype guides and insights for small teams — WordPress, Hosting, AI Tools, Workflows and more.",
+  alternates: { canonical: absoluteUrl("/editorial") },
   openGraph: {
     title: "Editorial | Practical No-Hype Guides for Small Teams",
     description:
       "Practical, no-hype guides and insights for small teams — WordPress, Hosting, AI Tools, Workflows and more.",
-    url: `${siteMetadata.siteUrl}/editorial`,
+    url: absoluteUrl("/editorial"),
     type: "website",
   },
 };

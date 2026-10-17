@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Metadata } from "next";
+import { absoluteUrl, baseOpenGraph } from "@/lib/seo";
 import { getAllCategories, getPostsByCategory } from "@/lib/mdx";
 import { Sidebar } from "@/components/Sidebar";
 
@@ -21,6 +22,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} Guides`,
     description: `Browse all Hub Central articles about ${categoryName}. Practical guides for small teams.`,
+    alternates: { canonical: absoluteUrl(`/category/${slug}`) },
+    openGraph: { ...baseOpenGraph, url: absoluteUrl(`/category/${slug}`) },
   };
 }
 

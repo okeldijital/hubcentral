@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { absoluteUrl, baseOpenGraph } from "@/lib/seo";
 import { getAllPosts, getAllCategories } from "@/lib/mdx";
+
+export const metadata: Metadata = {
+  alternates: { canonical: absoluteUrl("/blog") },
+  openGraph: { ...baseOpenGraph, url: absoluteUrl("/blog") },
+};
 
 export default function BlogPage() {
   const posts = getAllPosts();

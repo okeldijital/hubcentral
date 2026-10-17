@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo";
 import Link from "next/link";
 import { siteMetadata } from "@/lib/siteMetadata";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -56,11 +57,12 @@ export const metadata: Metadata = {
   title: "Practical Hosting Guides for Small Teams in 2026 | Hub Central",
   description:
     "Practical hosting guides for small teams in 2026. Honest WordPress hosting, WooCommerce, speed benchmarks, and professional email advice — no hype, no renewal traps, just what actually works.",
+  alternates: { canonical: absoluteUrl("/hosting") },
   openGraph: {
     title: "Practical Hosting Guides for Small Teams in 2026 | Hub Central",
     description:
       "Fast, reliable, and honest guides for WordPress, WooCommerce, and professional email hosting — no hype, no hidden renewal traps.",
-    url: `${siteMetadata.siteUrl}/hosting`,
+    url: absoluteUrl("/hosting"),
     type: "website",
     images: [
       {
