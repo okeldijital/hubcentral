@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "Hub Central privacy policy (draft, pending approval).",
   alternates: { canonical: absoluteUrl("/privacy") },
   openGraph: { ...baseOpenGraph, url: absoluteUrl("/privacy") },
+  // Draft with placeholder text: keep out of search until the final wording is approved.
+  robots: { index: false },
 };
 
 const sections = [

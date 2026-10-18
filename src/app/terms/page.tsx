@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "Hub Central terms of use (draft, pending approval).",
   alternates: { canonical: absoluteUrl("/terms") },
   openGraph: { ...baseOpenGraph, url: absoluteUrl("/terms") },
+  // Draft with placeholder text: keep out of search until the final wording is approved.
+  robots: { index: false },
 };
 
 const sections = [

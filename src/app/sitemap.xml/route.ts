@@ -10,7 +10,8 @@ export async function GET() {
     ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '') 
     : "https://hub.okeldijital.africa";
 
-  const staticRoutes = ["", "/about", "/blog", "/editorial", "/workflows-ai-small-teams-2026", "/hosting", "/wordpress", "/ai-tools", "/guides", "/contact", "/privacy", "/terms"];
+  const staticRoutes = ["", "/about", "/blog", "/editorial", "/workflows-ai-small-teams-2026", "/hosting", "/wordpress", "/ai-tools", "/guides", "/contact"];
+  // /privacy and /terms are noindex drafts; add them back here once their wording is approved.
   
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
