@@ -10,7 +10,7 @@ export async function GET() {
     ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '') 
     : "https://hub.okeldijital.africa";
 
-  const staticRoutes = ["", "/about", "/blog", "/editorial", "/workflows-ai-small-teams-2026", "/hosting", "/wordpress", "/ai-tools", "/guides"];
+  const staticRoutes = ["", "/about", "/blog", "/editorial", "/workflows-ai-small-teams-2026", "/hosting", "/wordpress", "/ai-tools", "/guides", "/contact", "/privacy", "/terms"];
   
   let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
