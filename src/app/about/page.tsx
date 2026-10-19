@@ -31,8 +31,8 @@ export default function AboutPage() {
             <figure className="mb-12">
               <div className="relative mx-auto aspect-square w-48 overflow-hidden rounded-full bg-zinc-100 shadow-xl ring-4 ring-amber-500/10 dark:bg-zinc-800">
                 <img
-                  src="/images/hub-central-founder.jpg"
-                  alt="Okel Dijital - Founder of Hub Central"
+                  src="/images/author-nkululeko-2026.jpg"
+                  alt="Nkululeko Nkosi - Founder of Hub Central"
                   className="h-full w-full object-cover"
                 />
               </div>
