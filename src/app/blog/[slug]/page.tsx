@@ -13,6 +13,8 @@ import { TableOfContents } from "@/components/TableOfContents";
 import { RelatedPosts } from "@/components/RelatedPosts";
 import { ShareButtons } from "@/components/ShareButtons";
 import { isPublished } from "@/lib/date";
+import { getAuthor, absoluteUrl } from "@/lib/authors";
+import Image from "next/image";
 
 
 // Remove dynamic ="force-dynamic" to allow static generation from generateStaticParams
@@ -88,6 +90,8 @@ export default async function BlogPostPage({ params }: Props) {
     ? new Date(post.frontmatter.lastmod)
     : postDate;
 
+  const author = getAuthor(post.frontmatter.author);
+
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -99,6 +103,8 @@ export default async function BlogPostPage({ params }: Props) {
     author: {
       "@type": "Person",
       name: post.frontmatter.author,
+      ...(author?.image ? { image: absoluteUrl(author.image) } : {}),
+      ...(author?.url ? { url: absoluteUrl(author.url) } : {}),
     },
     publisher: {
       "@type": "Organization",
@@ -151,10 +157,19 @@ export default async function BlogPostPage({ params }: Props) {
               
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[var(--border)] pb-6">
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-[var(--text-secondary)] font-medium">
-                  {/* Author avatar placeholder */}
-                  <div className="h-8 w-8 rounded-full bg-[var(--brand)] text-white flex items-center justify-center font-bold text-xs">
-                    {post.frontmatter.author.charAt(0)}
-                  </div>
+                  {author?.image ? (
+                    <Image
+                      src={author.image}
+                      alt={author.name}
+                      width={32}
+                      height={32}
+                      className="h-8 w-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-8 w-8 rounded-full bg-[var(--brand)] text-white flex items-center justify-center font-bold text-xs">
+                      {post.frontmatter.author.charAt(0)}
+                    </div>
+                  )}
                   <span className="text-[var(--text-primary)]">
                     {post.frontmatter.author}
                   </span>
@@ -262,9 +277,19 @@ export default async function BlogPostPage({ params }: Props) {
                 <RelatedPosts currentSlug={slug} />
 
                 <div className="rounded-xl bg-[var(--surface-1)] border border-[var(--border)] p-6 mb-8 flex flex-col md:flex-row gap-6 items-center">
-                   <div className="h-20 w-20 flex-shrink-0 rounded-full overflow-hidden bg-[var(--brand)] text-[var(--background)] flex items-center justify-center text-2xl font-bold">
-                     {post.frontmatter.author.charAt(0)}
-                   </div>
+                   {author?.image ? (
+                     <Image
+                       src={author.image}
+                       alt={author.name}
+                       width={80}
+                       height={80}
+                       className="h-20 w-20 flex-shrink-0 rounded-full object-cover"
+                     />
+                   ) : (
+                     <div className="h-20 w-20 flex-shrink-0 rounded-full overflow-hidden bg-[var(--brand)] text-[var(--background)] flex items-center justify-center text-2xl font-bold">
+                       {post.frontmatter.author.charAt(0)}
+                     </div>
+                   )}
                    <div>
                      <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">About {post.frontmatter.author}</h3>
                      <p className="text-sm text-[var(--text-secondary)]">

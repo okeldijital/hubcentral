@@ -8,7 +8,7 @@ import MidArticleAd from "@/components/MidArticleAd";
 import SidebarAd from "@/components/SidebarAd";
 
 export const metadata: Metadata = {
-  title: "About Okel Dijital - Hub Central Founder",
+  title: "About Nkululeko Nkosi - Hub Central Founder",
   description:
     "About Hub Central — practical AI, WordPress, and workflow guides for small teams. Founded by a web developer with 8 years helping small businesses make the most of modern technology.",
 };
@@ -23,7 +23,7 @@ export default function AboutPage() {
           <div className="prose prose-zinc dark:prose-invert mx-auto max-w-none">
             <header className="mb-12 text-center">
               <h1 className="mb-4 text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-50">
-                About Okel Dijital
+                About Nkululeko Nkosi
               </h1>
               <p className="text-lg text-zinc-600 dark:text-zinc-400">Founder, Hub Central</p>
             </header>
@@ -37,7 +37,7 @@ export default function AboutPage() {
                 />
               </div>
               <figcaption className="mt-4 text-center text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                Okel Dijital
+                Nkululeko Nkosi
               </figcaption>
             </figure>
 
