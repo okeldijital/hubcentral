@@ -29,7 +29,7 @@ export default function AboutPage() {
             </header>
 
             <figure className="mb-12">
-              <div className="relative mx-auto aspect-square w-48 overflow-hidden rounded-full bg-zinc-100 shadow-xl ring-4 ring-amber-500/10 dark:bg-zinc-800">
+              <div className="not-prose relative mx-auto aspect-square w-48 overflow-hidden rounded-full bg-zinc-100 shadow-xl ring-4 ring-amber-500/10 dark:bg-zinc-800">
                 <img
                   src="/images/author-nkululeko-2026.jpg"
                   alt="Nkululeko Nkosi - Founder of Hub Central"
