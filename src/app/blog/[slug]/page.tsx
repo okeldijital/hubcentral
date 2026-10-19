@@ -293,7 +293,8 @@ export default async function BlogPostPage({ params }: Props) {
                    <div>
                      <h3 className="text-xl font-bold text-[var(--text-primary)] mb-2">About {post.frontmatter.author}</h3>
                      <p className="text-sm text-[var(--text-secondary)]">
-                       Written by the Hub Central editorial team. We test real AI workflows and WordPress processes to help small teams work faster and smarter.
+                       {author?.bio ??
+                         "Written by the Hub Central editorial team. We test real AI workflows and WordPress processes to help small teams work faster and smarter."}
                      </p>
                    </div>
                 </div>

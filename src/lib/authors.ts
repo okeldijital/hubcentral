@@ -5,6 +5,8 @@ export interface Author {
   /** Site-relative path to a square author photo in /public. */
   image?: string;
   url?: string;
+  /** Short third-person bio for the "About {author}" box on posts. */
+  bio?: string;
 }
 
 const authors: Record<string, Author> = {
@@ -12,6 +14,7 @@ const authors: Record<string, Author> = {
     name: "Nkululeko Nkosi",
     image: "/images/author-nkululeko-2026.jpg",
     url: "/about",
+    bio: "Nkululeko Nkosi is the founder of Okel Dijital, the team behind HubCentral. Based in Durban, South Africa, he edits HubCentral and writes practical guides on AI, workflows and web hosting for small teams.",
   },
 };
 
