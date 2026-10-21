@@ -14,7 +14,7 @@ import { TableOfContents } from "@/components/TableOfContents";
 import { RelatedPosts } from "@/components/RelatedPosts";
 import { ShareButtons } from "@/components/ShareButtons";
 import { isPublished } from "@/lib/date";
-import { getAuthor, absoluteUrl } from "@/lib/authors";
+import { getAuthor } from "@/lib/authors";
 import Image from "next/image";
 
 
