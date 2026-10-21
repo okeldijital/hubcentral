@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { absoluteUrl, baseOpenGraph } from "@/lib/seo";
 import Link from "next/link";
 import { siteMetadata } from "@/lib/siteMetadata";
 import { getAllPosts } from "@/lib/mdx";
@@ -8,6 +9,8 @@ import { NewsletterForm } from "@/components/NewsletterForm";
 export const metadata: Metadata = {
   description:
     "Practical AI & WordPress guides for small teams in 2026. Honest workflows, hosting tips, and AI integration strategies that actually deliver ROI — no hype, just what works.",
+  alternates: { canonical: absoluteUrl("/") },
+  openGraph: { ...baseOpenGraph, url: absoluteUrl("/") },
 };
 
 export default function Home() {

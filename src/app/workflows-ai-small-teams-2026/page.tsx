@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo";
 import Link from "next/link";
 import { siteMetadata } from "@/lib/siteMetadata";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -94,11 +95,12 @@ export const metadata: Metadata = {
   title: "AI Workflows for Small Teams in 2026 – The Complete Practical Playbook",
   description:
     "Complete practical playbook for AI workflows in small teams 2026. Step-by-step guides on mapping processes, safe AI integration, and avoiding common automation mistakes — no hype, just real results.",
+  alternates: { canonical: absoluteUrl("/workflows-ai-small-teams-2026") },
   openGraph: {
     title: "AI Workflows for Small Teams in 2026 – The Complete Practical Playbook",
     description:
       "Complete practical playbook for AI workflows in small teams 2026. Step-by-step guides on mapping processes, safe AI integration, and avoiding common automation mistakes — no hype, just real results.",
-    url: `${siteMetadata.siteUrl}/workflows-ai-small-teams-2026`,
+    url: absoluteUrl("/workflows-ai-small-teams-2026"),
     type: "article",
     images: [
       {

@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { absoluteUrl, baseOpenGraph } from "@/lib/seo";
 import Link from "next/link";
 import { siteMetadata } from "@/lib/siteMetadata";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -11,6 +12,8 @@ export const metadata: Metadata = {
   title: "About Nkululeko Nkosi - Hub Central Founder",
   description:
     "About Hub Central — practical AI, WordPress, and workflow guides for small teams. Founded by a web developer with 8 years helping small businesses make the most of modern technology.",
+  alternates: { canonical: absoluteUrl("/about") },
+  openGraph: { ...baseOpenGraph, url: absoluteUrl("/about") },
 };
 
 export default function AboutPage() {

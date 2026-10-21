@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo";
 import { getPostBySlug, getPostSlugs, getAllPosts, getReadingTime } from "@/lib/mdx";
 import { Sidebar } from "@/components/Sidebar";
 import { Callout, Table, FAQ, Checklist, MDXImage, ProCon, AffiliateBox, StepList, Step, SidebarAd } from "@/components/MDXComponents";
@@ -58,7 +59,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: post.frontmatter.title,
     description: post.frontmatter.summary,
+    alternates: { canonical: absoluteUrl(`/blog/${slug}`) },
     openGraph: {
+      url: absoluteUrl(`/blog/${slug}`),
       title: post.frontmatter.title,
       description: post.frontmatter.summary,
       type: "article",

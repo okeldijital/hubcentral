@@ -3,6 +3,7 @@ import { Inter, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { siteMetadata } from "@/lib/siteMetadata";
+import { baseUrl, baseOpenGraph } from "@/lib/seo";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { ReadingProgress } from "@/components/ReadingProgress";
@@ -17,30 +18,18 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Use SITE_URL env var or fallback, ensure no trailing slash
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL
-  ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")
-  : "https://hub.okeldijital.africa";
-
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: siteMetadata.title.default,
   description: siteMetadata.description,
-  openGraph: {
-    title: siteMetadata.title.default,
-    description: siteMetadata.description,
-    url: baseUrl,
-    siteName: siteMetadata.title.default,
-    type: "website",
-  },
+  // No url / canonical here: they would be inherited by every route.
+  // Each page sets its own via absoluteUrl() in src/lib/seo.ts.
+  openGraph: baseOpenGraph,
   twitter: {
     card: "summary_large_image",
     title: siteMetadata.title.default,
     description: siteMetadata.description,
     siteId: siteMetadata.twitterHandle,
-  },
-  alternates: {
-    canonical: baseUrl,
   },
 };
 

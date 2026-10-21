@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { absoluteUrl } from "@/lib/seo";
 import Link from "next/link";
 import { siteMetadata } from "@/lib/siteMetadata";
 import { Breadcrumb } from "@/components/Breadcrumb";
@@ -49,11 +50,12 @@ export const metadata: Metadata = {
   title: "Practical AI Tools for Small Teams in 2026 | Hub Central",
   description:
     "Practical AI tools and safe integration guides for small teams in 2026. Honest reviews, checklists, and workflows that deliver real ROI — no hype, just what actually works.",
+  alternates: { canonical: absoluteUrl("/ai-tools") },
   openGraph: {
     title: "Practical AI Tools for Small Teams in 2026 | Hub Central",
     description:
       "Practical AI tools and safe integration guides for small teams in 2026. Honest reviews, checklists, and workflows that deliver real ROI — no hype, just what actually works.",
-    url: `${siteMetadata.siteUrl}/ai-tools`,
+    url: absoluteUrl("/ai-tools"),
     type: "website",
     images: [
       {
