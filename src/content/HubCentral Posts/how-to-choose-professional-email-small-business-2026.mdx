@@ -63,7 +63,7 @@ No provider can guarantee inbox placement, and we found no independent, publishe
 
 ### SPF, DKIM and DMARC in plain English
 
-- **SPF** is a DNS record listing the servers allowed to send mail for your domain. Google's [SPF guide](https://support.google.com/a/answer/33786) shows the typical Workspace record, `v=spf1 include:_spf.google.com ~all`, and notes a limit of 10 `include:` entries. Every other service that sends as your domain must be added.
+- **SPF** is a DNS record listing the servers allowed to send mail for your domain. Google's [SPF guide](https://support.google.com/a/answer/33786) shows the typical Workspace record, `v=spf1 include:_spf.google.com ~all`, and notes that a record can trigger at most 10 DNS lookups. `include:`, `a`, `mx`, `ptr`, `exists` and `redirect` all count, including lookups nested inside included records. Every other service that sends as your domain must be added.
 - **DKIM** adds a cryptographic signature so the receiving server can check a message came from your domain unaltered. Gmail requires a key of at least 1024 bits and recommends 2048.
 - **DMARC** tells receiving servers what to do when a message fails (deliver, quarantine or reject) and sends you reports. To pass, the visible From domain must match the domain that passed SPF or DKIM.
 
