@@ -1,0 +1,288 @@
+---
+title: 'How to Measure Whether an AI Workflow Is Actually Saving Time'
+date: '2026-11-13'
+lastmod: '2026-11-11'
+summary: 'A practical way for small teams to baseline one workflow, measure AI time savings with rework included, and decide whether to keep, change or stop the tool — with first-hand examples from Okel Dijital.'
+tags: ['ai-tools', 'workflows', 'productivity', 'measurement', 'roi', 'small-teams', 'ai-integration', '2026']
+image: '/images/how-to-measure-ai-workflow-time-savings-2026.png'
+author: 'Nkululeko Nkosi'
+---
+
+Most teams decide an AI tool is "working" because it feels faster.
+
+That feeling is a weak signal. In METR's [early-2025 randomised controlled trial](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) of experienced open-source developers, participants took **19% longer** on real repository tasks when AI was allowed, even though they expected a speed-up and still believed they had been faster afterwards. Perception and the stopwatch disagreed by a wide margin. METR now marks that productivity result [out of date](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) and, in a [February 2026 follow-up](https://metr.org/blog/2026-02-24-uplift-update/), says later measurements are hard to trust because many developers refuse tasks without AI. The durable lesson is not one headline percentage. It is that you cannot tell which story is true for your workflow until you measure it yourself.
+
+That does not mean AI never helps. Controlled studies in other settings show real gains on bounded tasks. A preregistered experiment on mid-level professional writing found ChatGPT cut average time by about **40%** and raised output quality by about **18%** ([Noy and Zhang, Science, 2023](https://scale.stanford.edu/publications/experimental-evidence-productivity-effects-generative-artificial-intelligence)). A large study of a generative AI assistant for customer-support agents found about a **15%** rise in issues resolved per hour on average ([Brynjolfsson, Li and Raymond, Quarterly Journal of Economics](https://academic.oup.com/qje/article/140/2/889/7990658)). I'm Nkululeko Nkosi, known as Leko. I run Okel Dijital in Durban and edit Hub Central. I use AI for coding, research, article writing, social media posts, and music-video image and video generation on a regular basis — and I track the time. This guide is the measurement step that should follow our [workflow-mapping article](/blog/mapping-your-existing-workflow-before-using-ai-2026) and our [framework for evaluating AI tools](/blog/framework-for-evaluating-ai-tools-before-adoption-2026). It is written for small teams that cannot run a twelve-week corporate ROI programme, but still need a number they can defend.
+
+*Hub Central has no affiliate relationships with any vendor or study cited here. Study details were re-checked on 10 November 2026 and may be updated by their authors since.*
+
+<MidArticleAd />
+
+## The Short Version
+
+- **Measure one workflow and one unit of work**, not "AI in general".
+- **Baseline before you change anything.** Same people, same unit, same period definition.
+- **Count the full cycle:** drafting or generation time **plus** review, correction, waiting and rework.
+- **Track quality beside speed.** Faster rubbish is not a saving.
+- **Convert verified time into money only after the stopwatch result is stable**, using your own hourly rate — and separate realised savings from forecasts.
+- **Decide deliberately:** keep, redesign, or stop. If you keep repeating the same step, abandon the workflow.
+
+<figure className="my-8">
+  <img
+    src="/images/how-to-measure-ai-workflow-time-savings-2026-six-cards.png"
+    alt="Six cards summarising how to measure AI time savings: one workflow, baseline first, full cycle, quality with speed, money after evidence, keep-change-or-stop."
+    width="2400"
+    height="2312"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+## Why "It Feels Faster" Is Not Enough
+
+Self-reported productivity is useful for understanding how people experience a tool. It is a poor substitute for elapsed time on a defined unit of work.
+
+Three common failure modes show up again and again:
+
+1. **Generation time is confused with cycle time.** The draft arrives in thirty seconds, then someone spends twenty minutes fixing it. Workday's [2026 Beyond Productivity research](https://www.workday.com/en-us/perspectives/ai/maximize-ai-roi.html) reports that employees spend the equivalent of roughly **1.5 weeks a year** fixing AI-generated output. If review time is left out of the ledger, the "saving" is fiction.
+2. **The mix of work changes.** You compare a quiet fortnight before AI with a busy month after it, then credit the tool for the difference. IBM's guidance on [measuring AI-assisted development ROI](https://www.ibm.com/think/insights/measuring-roi-ai-assisted-development-how-ibm-did-it) stresses matched windows, stable teams and artifact-level data for exactly this reason.
+3. **Activity is mistaken for outcome.** Tokens used, prompts sent and chats opened describe consumption. They do not tell you whether a ticket closed, a report shipped or a client enquiry was answered correctly.
+
+Australia's [National AI Centre](https://www.ai.gov.au/planning-ai/prepare-your-business/map-your-processes) puts process mapping before tool choice for the same reason Hub Central does: without a clear before picture, an after number is hard to attribute. The UK government's [AI Knowledge Hub note on measuring impact](https://ai.gov.uk/knowledge-hub/how-to/measure-impact) likewise starts from a baseline and treats ROI as one measure among quality, efficiency, satisfaction and usage.
+
+## What I Measure at Okel Dijital
+
+I do not guess whether AI is helping. I track my time in Notion, which I use as the brain of my operations — tasks, calendar blocks and the log of what I actually did. Notion also connects the different AI agents and models I work with (including ChatGPT and Grok), so they share context through that same system rather than living in separate chats I have to re-explain.
+
+Here is what that tracking has shown me, in approximate terms.
+
+### Hub Central articles and social posts
+
+Before I used AI for this work, finishing one Hub Central article took **at best about two weeks**, and often **up to about four**. A typical cycle looked like this:
+
+1. about a week researching the topic;
+2. gathering assets and designing the graphics;
+3. writing, editing and reviewing the article;
+4. coding the adjustments on the Next.js Hub Central site; and
+5. creating the social posts — design, captions and scheduling.
+
+Because I wanted the work done properly, the cadence was roughly **one article a month**.
+
+Now I publish **an article every week**, with weekly social posts alongside it. Research, writing, site updates and social are handled with AI. The unit of work is the same — one article shipped with its distribution — but the calendar has changed from monthly to weekly. That is capacity created, not a vague feeling that "AI helps with content".
+
+### Websites and coding
+
+I have been building sites and apps for a long time. A proper website — stable, no broken links, fast, optimised, and matching the design I had in mind — used to take me **at least about three to four months**.
+
+With AI handling much of that work, builds now take **days** for simpler sites, or **a few weeks** when the project is more complicated. Again, the comparison is against the same definition of done, not against a demo that never went live.
+
+### Where the time still goes: music videos
+
+I also use AI to generate images and video for music videos. That is where I still spend a lot of time fixing mistakes and re-prompting.
+
+Getting people to look and move like real people, and getting the actions I want, is hard. A generation often comes back almost right, but not quite. I regularly re-prompt **about four or five times**, and sometimes more, to get camera movement, lighting and the character's production looking correct. Generation is fast. The review-and-retry loop is where the clock runs. If you only timed the first render, you would invent a saving that is not there.
+
+### Where it has not paid off: design
+
+Sometimes AI does not earn its place. For me that shows up most clearly in design work — posters and artwork. After looking at the result, I occasionally conclude I could have done it myself. The output often feels generic, like something I have already seen. When that happens, I stop treating the tool as a default for that step.
+
+<figure className="my-8">
+  <img
+    src="/images/how-to-measure-ai-workflow-time-savings-2026-before-after.png"
+    alt="Three cards showing measured before-and-after changes for articles, websites and music-video re-prompting."
+    width="2400"
+    height="1760"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+## Step 1 — Pick One Workflow and One Unit of Work
+
+Do not try to measure "AI across the business".
+
+Choose:
+
+- **One workflow** you have already mapped (or can map in an afternoon).
+- **One unit of work** that the process already produces and someone already accepts as done.
+
+Good units for small teams:
+
+| Workflow | Useful unit of work |
+| --- | --- |
+| Client enquiries | One complete reply sent (or one enquiry closed) |
+| Recurring reports | One finished report accepted by its owner |
+| Content publishing | One article moved from brief to published (plus its social pack, if that is part of "done") |
+| Support | One ticket resolved without reopening within 7 days |
+| Development | One pull request merged (or one issue closed) |
+| Site build | One site that meets your stability, speed and design bar |
+
+IBM's RevTech measurement used pull requests because they were already reviewed, approved and stored. Your equivalent should be something your process already governs. If you have to invent a new spreadsheet definition after the tool arrives, the baseline and the after period will not match.
+
+If you have not mapped the workflow yet, stop here and do that first: [How to Map a Workflow Before Using AI](/blog/mapping-your-existing-workflow-before-using-ai-2026). Measurement without a map usually measures the wrong step.
+
+## Step 2 — Capture a Baseline Before the Tool Changes Anything
+
+A baseline is not a vibe. It is a short, dated record of how the unit of work performs **without** the AI change you are about to make.
+
+For a small team, two weeks is a workable minimum; four weeks is better if volume is low. Record, for each completed unit:
+
+- **Active handling time** (minutes a person spent on it).
+- **Elapsed cycle time** (trigger to done), if waiting is part of the pain.
+- **Rework:** rejected drafts, reopenings, corrections after "done", and prompt retries.
+- **Quality mark:** pass / fail against a written definition of done, or a simple 1–5 score used the same way every time.
+- **Conditions:** who did the work, roughly how busy the period was, and any other change that happened at the same time (new hire, new policy, outage).
+
+Round times to the nearest five or fifteen minutes. Claiming minute-level precision on interrupted knowledge work invents accuracy you do not have.
+
+Write the definition of done **before** the pilot. "Looks fine" is not a quality metric. "Includes price, next step and owner name, and needs no factual correction" is.
+
+You do not need fancy software. I keep the log in Notion because that is already where my tasks and calendar live. A dated note, a simple table or a time-block calendar works as long as you use the same fields before and after.
+
+## Step 3 — Run a Fair After Period
+
+Introduce AI in **one step** of the workflow only — the discipline from our [AI integration checklist](/blog/ai-integration-checklist-for-small-teams-2026). Then measure the same unit, with the same definitions, after people have moved past the first awkward week.
+
+Practical rules:
+
+- **Same unit, same done criteria, same time-rounding.**
+- **Include review and correction time.** If AI drafts and a human edits, both clocks count. If you re-prompt four or five times for a music-video shot, those retries count too.
+- **Prefer a comparison design when you can.** Two people on similar work, one with the tool and one without for a fortnight, beats a vague before/after when staffing allows. If you cannot, use tightly matched calendar windows and say so.
+- **Do not change three tools in the same fortnight** and then ask which one saved time.
+
+If the workflow gets worse, that is a valid result. Our article on [when AI makes a workflow worse](/blog/when-ai-makes-a-workflow-worse-2026) covers the failure modes; measurement is how you catch them early instead of arguing from memory.
+
+## Step 4 — Calculate Time Saved (or Lost) Honestly
+
+Use a simple ledger per unit of work:
+
+**Net minutes per unit = (baseline active minutes) − (after active minutes, including review and rework)**
+
+Then:
+
+**Hours saved (or lost) per week ≈ net minutes × units completed per week ÷ 60**
+
+If you want a money figure later, use your own rate — do not invent one:
+
+**Approximate weekly value ≈ hours saved per week × your hourly rate**
+
+State whether that value is cash you stopped spending, hiring you avoided, or capacity you used on other work. Report a range when the sample is small. With a handful of people and a two-week window, treat a single average as approximate, not gospel. Prefer: "about 2–3 hours a week on this workflow, based on N completed units over two weeks, with rework included."
+
+Three rules that keep the number honest:
+
+1. **Never credit time you did not measure.**
+2. **Never ignore negative results.** A tool that costs you net time in your setting should be redesigned or stopped, not defended with a screenshot of a cheerful chat.
+3. **Separate capacity created from cash saved.** Moving Hub Central from roughly one article a month to one a week is capacity created. It is not automatically a payroll cut. IBM's ROI framing distinguishes cost savings, cost avoidance, capacity creation and revenue enablement for this reason. Say which one you mean.
+
+<figure className="my-8">
+  <img
+    src="/images/how-to-measure-ai-workflow-time-savings-2026-formula.png"
+    alt="Formula card for calculating net AI time savings including review, with a blank hourly-rate step."
+    width="2400"
+    height="1896"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+## Step 5 — Add Quality, Cost and a Keep / Change / Stop Decision
+
+Speed alone can mislead. Pair the time result with:
+
+| Lens | What to ask |
+| --- | --- |
+| Quality | Did error, rework or reopen rates rise? Does the output feel generic or off-brief? |
+| Adoption | Is the tool actually used on the step you intended? |
+| Cost | Licence or usage fees + setup + ongoing review and re-prompt time |
+| Risk | What happens when the model is wrong on this step? |
+| Opportunity | What higher-value work, if any, absorbed the freed time? |
+
+A practical decision rule for a small team after one measured pilot:
+
+- **Keep** if net time improved (or held steady) **and** quality held **and** the cost is justified by the capacity you actually used.
+- **Change** if time improved but quality slipped, or if review overhead ate the gain — tighten prompts, narrow the step, or add a checkpoint.
+- **Stop** if net time worsened, quality worsened, adoption is theatre, or the subscription costs more than the verified capacity is worth.
+
+My own rule is stricter on repetition. If I have to repeat a step **more than twice**, or if the next project always forces me to redo a step I thought was finished, something is wrong with the workflow. I abandon that workflow, because a good one works end to end. Measurement tells you when you are stuck in that loop; pride in the tool does not.
+
+The UK guidance is blunt on the purpose of measurement: check whether the tool delivers value, meets user needs and justifies its cost. That is enough mandate for a five-person team.
+
+## A One-Page Measurement Sheet You Can Copy
+
+Copy this into a note and fill it before the pilot starts.
+
+1. **Workflow name:**
+2. **Unit of work (definition of done):**
+3. **Step where AI will be introduced:**
+4. **Baseline window:** dates, who, how many units
+5. **After window:** dates, who, how many units
+6. **Active minutes per unit (baseline avg / after avg):**
+7. **Rework / re-prompt rate (baseline / after):**
+8. **Quality pass rate (baseline / after):**
+9. **Net hours per week:**
+10. **Approximate weekly value:** net hours × your hourly rate (optional)
+11. **Full monthly cost of the tool (licence + estimated review overhead):**
+12. **Decision on [date]:** keep / change / stop — and why
+13. **Next review date:**
+
+<figure className="my-8">
+  <img
+    src="/images/how-to-measure-ai-workflow-time-savings-2026-measurement-sheet.png"
+    alt="One-page checklist for measuring whether an AI workflow saves time."
+    width="2400"
+    height="2856"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+[Download the printable measurement sheet (PDF)](/images/how-to-measure-ai-workflow-time-savings-2026-measurement-sheet-a4.pdf)
+
+## What the Research Is (and Is Not) Saying
+
+Use published studies as context, not as a substitute for your own baseline.
+
+- **Writing tasks can speed up a lot in controlled settings.** Noy and Zhang's experiment is one of the cleanest examples (~40% less time, ~18% higher quality on the tasks they tested).
+- **Customer-support assistance can raise throughput.** Brynjolfsson and co-authors measured about 15% more issues resolved per hour, with larger gains for less experienced agents.
+- **Experienced developers on hard, familiar codebases are a different setting.** METR's early-2025 RCT found a 19% slowdown even while developers believed they were faster. METR now [marks those results out of date](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/) and its [February 2026 update](https://metr.org/blog/2026-02-24-uplift-update/) reports selection effects that make a clean current percentage hard to trust. Use the perception gap as a caution, not as today's universal coding number.
+- **OECD summaries of experimental studies** report generative-AI efficiency gains that often fall somewhere between roughly **5% and more than 25%** depending on the task and population ([OECD overview, July 2025](https://www.oecd.org/en/blogs/2025/07/unlocking-productivity-with-generative-ai-evidence-from-experimental-studies.html)). That spread is the story: the number for *your* workflow is not the midpoint of someone else's paper.
+
+If a vendor slide quotes a single productivity percentage with no baseline method, treat it as marketing until you can reproduce a smaller version of the claim on your own unit of work. My Hub Central, website and music-video numbers are one small-team baseline. Yours will differ. Measure them.
+
+<FAQ items={[
+  {
+    question: "How long should a small team run an AI time-saving pilot?",
+    answer: "Long enough to finish a meaningful sample of the same unit of work after people are past the first learning week. Two weeks of baseline and two to four weeks after introduction is a practical starting point for recurring work. Low-volume workflows may need longer windows so you are not judging the tool on three lucky (or unlucky) cases."
+  },
+  {
+    question: "What if we already adopted the AI tool and never took a baseline?",
+    answer: "You cannot invent a perfect past. The next-best options are: pause the tool on a matched slice of work for a fortnight and measure that as a temporary control; compare similar work done by people who do and do not use the tool; or start a clean baseline now before you renew, expand seats or add a second AI step. Say clearly which design you used."
+  },
+  {
+    question: "Should we trust employee estimates of time saved?",
+    answer: "Use them as a signal of experience and adoption, not as the headline metric. METR's early-2025 coding RCT showed a large gap between how fast developers felt and how long tasks actually took (that productivity snapshot is now marked out of date; the perception gap is still the caution). Pair sentiment with timed units of work that include review, rework and re-prompts."
+  },
+  {
+    question: "How do we turn hours saved into money?",
+    answer: "Only after the time result is measured. Multiply verified hours by your hourly rate (the loaded rate your finance owner accepts), for the same period as the costs you include. State whether the hours became cash savings, avoided hiring, or capacity used on other work. Do not invent a rate, and do not count the same hour twice."
+  },
+  {
+    question: "What should we measure besides speed?",
+    answer: "Quality or rework rate, adoption on the intended step, full cost (licence plus human review and retries), and whether freed time went somewhere useful. UK public-sector guidance also points to user satisfaction and ongoing evaluation after release, not a one-off launch check."
+  },
+  {
+    question: "When should we abandon an AI workflow?",
+    answer: "When net time or quality worsens, when review overhead eats the gain, or when you keep repeating the same step. A practical rule: if you have to redo a step more than twice, or the next project always forces the same redo, the workflow is broken. A good workflow works end to end."
+  }
+]} />
+
+## What to Do Next
+
+1. Pick **one** workflow you already mapped — or map it this week.
+2. Write the **unit of work** and definition of done.
+3. Run a **baseline** before you change the step (log it somewhere you already work, such as Notion).
+4. Introduce AI in that **one** step.
+5. Measure again, including review and re-prompts.
+6. Keep, change, or stop — on purpose.
+
+If you are still choosing tools, go back to the [evaluation framework](/blog/framework-for-evaluating-ai-tools-before-adoption-2026) and the [integration checklist](/blog/ai-integration-checklist-for-small-teams-2026). Measurement does not replace those steps. It is how you know whether they worked.
