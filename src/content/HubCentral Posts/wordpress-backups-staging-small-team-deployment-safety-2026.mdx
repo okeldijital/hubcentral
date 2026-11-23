@@ -1,0 +1,378 @@
+---
+title: 'WordPress Backups and Staging: The Small-Team Deployment Safety System'
+date: '2026-11-23'
+lastmod: '2026-11-23'
+summary: 'A practical backup-and-staging system for small teams: 3-2-1 copies, restore tests, a staging workflow and a rollback plan, plus South African hosting and POPIA notes.'
+tags: ['wordpress', 'backups', 'staging', 'small-teams', 'security', 'popia', 'hosting', 'south-africa', '2026']
+image: '/images/wordpress-backups-staging-small-team-deployment-safety-2026.png'
+author: 'Nkululeko Nkosi'
+---
+
+Most small WordPress sites fail in one of two boring ways.
+
+Someone clicks **Update** on a plugin on the live site, and the home page turns into a white screen or a critical-error message. Or something worse happens: an account is compromised, files are encrypted or wiped, and the only backup turns out to be sitting on the same server that was hit.
+
+Neither is rare enough to ignore. Patchstack's [State of WordPress Security in 2026](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/) counted **11,334** new vulnerabilities in the WordPress ecosystem in 2025, up **42%** on 2024. **91%** were in plugins, and **46%** had no developer fix in time for public disclosure. For heavily exploited vulnerabilities, Patchstack puts the weighted median time to first exploit at about **5 hours**. Updates cannot wait. Closer to home, Trend Micro data published in INTERPOL's [Africa Cyberthreat Assessment Report 2025](https://www.interpol.int/en/content/download/23222/file/2025%20Africa%20Cyberthreat%20Assessment%20Report.pdf) recorded **12,281** ransomware threat detections in South Africa in 2024, second on the continent after Egypt.
+
+So you have to update often, and you have to be able to undo things. That is what this guide is about. **Backups and staging are one system, not two separate chores.** A backup you have never restored is a hope. A staging site with no offsite backup is a test bench with no undo button. What follows is the whole system for a 1–25 person team: 3-2-1 copies, a restore test, a staging workflow, a deploy checklist and a rollback path, with South African hosting and POPIA notes where they are real.
+
+I'm Nkululeko Nkosi, known as Leko. I run Okel Dijital in Durban and edit Hub Central. This piece follows our [infrastructure lessons for small teams](/blog/small-team-technology-infrastructure-lessons-2026), where the theme was simple: don't improvise production.
+
+*Hub Central has no affiliate relationships with any host or plugin mentioned here. Host features and prices were checked on 23 November 2026 and will change; check the vendor's page before you buy. The POPIA section is a plain-language summary, not legal advice.*
+
+<MidArticleAd />
+
+## The Short Version
+
+- **Back up the database and the files together.** One without the other is not a backup of a WordPress site.
+- **Keep three copies, on two kinds of storage, with one offsite** — and make sure at least one copy is offline or isolated from your hosting account.
+- **Test a restore** on a regular schedule. The time it actually takes is your real recovery time.
+- **Never test updates on the live site.** Clone to staging, update there, check the pages that matter, then push.
+- **Take a fresh backup right before every push**, and treat restoring it as your rollback.
+- **Your backups hold personal information.** Under POPIA they need the same protection as the live site.
+
+<figure className="my-8">
+  <img
+    src="/images/wordpress-backups-staging-small-team-deployment-safety-2026-six-cards.png"
+    alt="Six cards summarising the WordPress safety system: database and files together, 3-2-1 copies, restore tests, staging first, backup before every push, protect personal information."
+    width="2400"
+    height="2188"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+## Why a Host Backup Is Not a Safety System
+
+### What you are actually backing up
+
+A WordPress site has two parts, and WordPress.org's [backup handbook](https://developer.wordpress.org/advanced-administration/security/backup/) is clear that you need both:
+
+- **The database** holds your posts, pages, comments, users, settings and, on a shop, your WooCommerce orders and customers.
+- **The files** hold WordPress itself, your theme, your plugins and your uploads — every image and PDF you have ever added.
+
+Backing up the files does **not** back up the database. Treat a database export and a files copy taken at about the same time as one **backup set**. The handbook's usual order is to back up the database first and then the files; when restoring, put the files back first and then import the database.
+
+### Host backups are one copy, by the host's own admission
+
+Most decent hosts run daily backups, and they are worth having. They are still only one copy, usually on the provider's own infrastructure, and the hosts say so themselves.
+
+xneelo's help centre says its daily backups are kept for [two weeks](https://xneelo.co.za/help-centre/website/managing-website/backups/how-long-does-xneelo-keep-backups/) and are intended for emergencies, and adds: "[You should not rely on our backups as the only copy of your content](https://xneelo.co.za/help-centre/website/managing-website/backups/backup-service/)." A separate page says plainly that [backups are not guaranteed](https://xneelo.co.za/help-centre/website/xneelo-doesnt-guarantee-backups/): a failed run can leave only an older copy, and a backup-server failure could mean no host restore for up to 24 hours. (xneelo also says it routinely achieves "over 99% success rate" on backups — that is the vendor's own figure.)
+
+Afrihost's blog makes the same point in its title: [back up your hosting content, yourself](https://blog.afrihost.com/post/the-importance-of-backing-up-your-hosting-content-yourself/). It says Afrihost will back up your content for up to two weeks, that "no system is 100%", and that you should keep your own copies.
+
+There is also a security reason. The [CISA and MS-ISAC Ransomware Guide](https://www.cisa.gov/sites/default/files/publications/CISA%5FMS-ISAC%5FRansomware%20Guide%5FS508C.pdf) warns that many ransomware variants try to find and delete backups they can reach. A backup in the same account as the site is exactly the kind they can reach.
+
+### The 3-2-1 rule, plus one
+
+CISA's [small-business backup guidance](https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business/back-up-business-data) uses the **3-2-1** rule: **3** copies of your important data, on **2** different types of storage, with **1** copy offsite.
+
+The UK's National Cyber Security Centre adds a catch worth remembering: 3-2-1 "[does not require any backup location to be offline](https://www.ncsc.gov.uk/blog-post/offline-backups-in-an-online-world)". If every copy is permanently connected, one compromise can reach all of them. So add one rule: **at least one copy must be offline, or isolated so that your site and hosting logins cannot delete it.**
+
+<figure className="my-8">
+  <img
+    src="/images/wordpress-backups-staging-small-team-deployment-safety-2026-3-2-1.png"
+    alt="Diagram of the 3-2-1 backup rule for a WordPress site, with the live site, a cloud backup and an offline copy, and a note that one copy must be isolated."
+    width="2400"
+    height="2304"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+## How Much Can You Lose, and for How Long?
+
+Two terms from disaster-recovery planning are useful here, and both are simpler than they sound.
+
+- **Recovery Point Objective (RPO)** is "[the point in time to which data must be recovered after an outage](https://csrc.nist.gov/glossary/term/RPO)" (NIST). In plain words: **how much recent work can you afford to lose?** If your backup runs once a day, you could lose up to a day of orders, comments, bookings or form entries.
+- **Recovery Time Objective (RTO)** is how long a system can stay in recovery "[before negatively impacting the organization's mission](https://csrc.nist.gov/glossary/term/Recovery_Time_Objective)" (NIST). In plain words: **how long can the site be down before it really hurts?**
+
+You set these numbers, not a blog post. A brochure site that changes once a week can probably live with losing a day of edits. A shop, a booking site or a membership site probably cannot, and may need backups several times a day or in real time.
+
+WordPress.org's starting point is to back up quieter sites **at least weekly** and busy sites **daily**, and to keep **3–5 recent backups** in different places. The NCSC's [10 Steps guidance](https://www.ncsc.gov.uk/collection/10-steps/data-security) suggests keeping backups for **at least a month**, not one copy that overwrites itself every night. That matters because a hack is often found days after it happened; if your only backup was taken last night, it may already contain the problem.
+
+The only way to know your real RTO is to time a restore. CISA recommends testing both full and partial restores and being able to roll data back **at least seven days**.
+
+### The South African wrinkle: power and connectivity
+
+Load-shedding and last-mile outages are an operational risk for any team that runs its own updates. You do not need statistics to plan for them:
+
+- **Keep a recent backup you can reach without your host's control panel** — downloaded, or in a second location. CISA advises knowing how to reach critical files even without an internet connection.
+- **Don't start a live update, a push from staging or a restore** if you might lose power or connectivity before you can test the result and roll back.
+- **Run restore tests when power is stable**, not in the middle of a scheduled outage window.
+- **Write the restore steps down** so someone can follow them on a phone if the office is dark.
+
+## Build 3-2-1 Backups You Can Actually Restore
+
+### What 3-2-1 looks like on a small WordPress site
+
+This is an example, not the only correct setup:
+
+1. **Copy one:** the live site itself (database and files).
+2. **Copy two:** a scheduled backup set sent somewhere other than your hosting account — a backup plugin's cloud storage, or a storage bucket or drive account that only the backup job can write to.
+3. **Copy three:** a downloaded or second-location copy that is not permanently connected, refreshed on a schedule (for example monthly, and before any big change).
+
+Keep several versions, not one. Encrypt the backups and lock down the storage account with its own strong password and multi-factor authentication; both CISA and the NCSC recommend encrypted, protected backups.
+
+### Offsite is not "the host's backup folder"
+
+If the only copy sits in the same account or with the same provider, a compromised control panel, a failed backup server or ransomware that looks for connected storage can take it too. The NCSC's [ransomware guidance](https://www.ncsc.gov.uk/guidance/mitigating-malware-and-ransomware-attacks) warns against leaving backup drives permanently connected, against relying on two copies on one removable drive or several copies in one cloud service, and recommends protecting previous versions in cloud storage from immediate deletion. Its [ransomware-resistant backups](https://www.ncsc.gov.uk/collection/ransomware-resistant-backups) principles go further if you want the detail.
+
+### Test the restore, or you don't have a backup
+
+WordPress.org's [upgrading guide](https://developer.wordpress.org/advanced-administration/upgrade/upgrading/) puts it bluntly: before an upgrade, "Verify the backups you created are there and usable. This is essential."
+
+A practical restore test for a small team:
+
+1. Restore your latest backup set onto a staging or throwaway copy, never over the live site.
+2. Check that a normal page, an image, a recent form entry and — on a shop — a recent test order come back.
+3. Log in as an editor and as an administrator.
+4. **Write down how long it took, start to finish.** That is your real RTO, not the one you hoped for.
+5. Note anything that was missing or confusing, and fix the backup job or the written steps.
+
+Do this at least quarterly, and monthly if the site takes orders or bookings. If you are restoring after a hack, the NCSC also recommends scanning backups for malware before you restore them.
+
+### Tools: pick a method, not a winner
+
+Your host's backup can be one copy. A plugin or service usually provides the offsite copy and, often, a staging site. Here is what five common options say they do, with prices as shown on their own pages on **23 November 2026**. Prices are in US dollars or euros, so South African teams will pay in rand at their card's exchange rate. This is not a ranking.
+
+<div className="my-8 overflow-hidden rounded-xl border border-[var(--border)] shadow-sm">
+  <div className="overflow-x-auto">
+    <table className="min-w-full text-sm">
+      <caption className="bg-[var(--surface-1)] p-3 text-left text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--border)]">Backup and staging tools: starting plans as shown on 23 November 2026</caption>
+      <thead className="bg-[var(--surface-1)] text-[var(--text-primary)]">
+        <tr>
+          <th className="border-b border-[var(--border)] px-4 py-3 text-left font-bold">Tool</th>
+          <th className="border-b border-[var(--border)] px-4 py-3 text-left font-bold">Starting plan (as shown)</th>
+          <th className="border-b border-[var(--border)] px-4 py-3 text-left font-bold">What the vendor says it does</th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-[var(--border)] bg-[var(--background)]">
+        <tr className="hover:bg-[var(--surface-1)]/50 transition-colors">
+          <td className="px-4 py-3 text-[var(--text-secondary)]"><a href="https://teamupdraft.com/updraftplus/pricing/">UpdraftPlus</a></td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Personal, <strong>USD 70/year</strong> (up to 2 sites)</td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Scheduled and incremental backups to multiple locations, automatic backup before updates, basic staging, one-click migration. A free plugin also exists.</td>
+        </tr>
+        <tr className="hover:bg-[var(--surface-1)]/50 transition-colors">
+          <td className="px-4 py-3 text-[var(--text-secondary)]"><a href="https://jetpack.com/backup/">Jetpack VaultPress Backup</a></td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]"><strong>USD 9.95/month, billed yearly</strong> (USD 119.40); the page showed 50% off the first year</td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Real-time cloud backups of files and database, 10 GB to start, 30-day archive, one-click restore including when the host is down.</td>
+        </tr>
+        <tr className="hover:bg-[var(--surface-1)]/50 transition-colors">
+          <td className="px-4 py-3 text-[var(--text-secondary)]"><a href="https://blogvault.net/pricing/">BlogVault</a></td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Personal, <strong>USD 49.50 per site/year</strong> (shown as 50% off USD 99)</td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Automatic daily backups, 30-day retention, one-click restore and migration, a staging site.</td>
+        </tr>
+        <tr className="hover:bg-[var(--surface-1)]/50 transition-colors">
+          <td className="px-4 py-3 text-[var(--text-secondary)]"><a href="https://duplicator.com/pricing/">Duplicator Pro</a></td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Basic, list price <strong>USD 79</strong> (up to 2 sites)</td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Scheduled backups, one-click restore, encryption and migrations; staging and incremental backups on the Pro plan. The page advertised a limited-time discount, with renewals at full price.</td>
+        </tr>
+        <tr className="hover:bg-[var(--surface-1)]/50 transition-colors">
+          <td className="px-4 py-3 text-[var(--text-secondary)]"><a href="https://wp-staging.com/">WP STAGING</a></td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Personal, <strong>EUR 89/year</strong>, excluding VAT</td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Staging site creation and backups; push staging to live, scheduled backups and remote storage from the Business plan (EUR 139/year).</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+Whichever you choose, a free or cheap tool still needs two things to be part of a safety system: **an offsite destination you control, and a restore test on the calendar.**
+
+## Add Staging So You Never Test on the Live Site
+
+A **staging site** is a private copy of your live site where you try plugin, theme and core updates, design changes and migrations before anyone sees them on your real address.
+
+### Build the copy safely
+
+A staging copy contains your real data, which means it can do real damage: send emails to real customers, run payment or scheduled jobs, or get indexed by search engines as duplicate content. WordPress.org's Hosting Team handbook on [staging environments](https://make.wordpress.org/hosting/handbook/reliability/staging/) lists the precautions:
+
+- **Mark it as staging.** In the copy's `wp-config.php`, set `define( 'WP_ENVIRONMENT_TYPE', 'staging' );`. Don't carry that line back to production.
+- **Restrict access** with HTTP authentication or a similar login. Ticking "discourage search engines" is useful, but it is not access control.
+- **Stop real email**, or capture it, so customers never get messages from the copy. (Our [professional email guide](/blog/how-to-choose-professional-email-small-business-2026) covers why a confused sender address does lasting damage.)
+- **Turn off scheduled jobs**: set `DISABLE_WP_CRON` to true and make sure no system cron hits the copy.
+- **Use sandbox payment credentials**, never live ones.
+- **Change URLs with `wp search-replace`**, which handles serialised data, and do a dry run first. Don't use a plain SQL find-and-replace.
+
+### Clone, test, push
+
+1. **Refresh staging from production first**, so you are not testing against a stale copy.
+2. **Apply the update or change** on staging.
+3. **Test the critical path:** home page, a key landing page, a contact or booking form, login, and checkout if you sell online.
+4. **Push to live.** Prefer pushing **files** — themes, plugins, code — rather than overwriting the live database. Orders, comments and users created on the live site since you cloned it are not in the staging database, and a full database push can wipe them. If a database push is unavoidable, take a fresh live backup first and tell whoever owns the site what will be replaced.
+
+### What South African hosts say they offer
+
+Some local WordPress plans include staging, and some leave it to you. On 23 November 2026, the hosts' own pages said:
+
+- **Domains.co.za:** its [WordPress hosting](https://www.domains.co.za/wordpress-hosting) plans list "Daily Off-Site Backups" and a "WordPress Staging Area", from **R129/month** (WordPress Small). The page says all prices include VAT.
+- **HOSTAFRICA:** its [managed WordPress hosting](https://hostafrica.co.za/hosting/wordpress-hosting/) advertises "Safe staging environments" and "Automatic daily backups", with plan cards listing "5 Daily backups". Its [dashboard guide](https://www.hostafrica.com/blog/wordpress/panelalpha-wordpress-dashboard-guide/) describes staging as a full clone of your live site. WP Starter was shown at **R90/month, R120/month on renewal**, pre-paid for a year. VAT was not stated on the page.
+- **xneelo:** daily backups are listed on its [WordPress hosting](https://xneelo.co.za/wordpress-hosting/) page ("Starting from R99 per month", VAT inclusive), but staging is not a one-click product. Its guide shows you [how to build a staging site yourself](https://xneelo.co.za/help-centre/website/how-to-create-a-staging-website/) on a subdomain.
+- **Afrihost:** you can restore from [Afribackup](https://help.afrihost.com/entry/how-to-restore-a-backup-using-afribackup/) restore points in cPanel. We could not find an official Afrihost page describing a built-in staging feature, so plan to build your own staging subdomain.
+
+This is not a recommendation of any host. If you are choosing one, our guide to [choosing a WordPress hosting plan](/blog/how-to-choose-wordpress-hosting-plan-2026) covers the wider decision. Whatever the host provides, keep your own independent backup before any push.
+
+<figure className="my-8">
+  <img
+    src="/images/wordpress-backups-staging-small-team-deployment-safety-2026-staging-flow.png"
+    alt="Flow diagram of cloning a WordPress site to staging, testing updates, backing up live, pushing files and rolling back from the pre-push backup if needed."
+    width="2400"
+    height="2796"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+## The Small-Team Update and Deploy Checklist
+
+Print this, or paste it into wherever your team keeps its procedures, and use it every time.
+
+1. **Confirm you have a recent backup set** (database and files) **plus an offsite or downloaded copy.**
+2. **Check the backup is usable.** If you have not tested one recently, restore it to staging first.
+3. **Refresh staging from production.** Confirm it is marked as staging, locked down, sending no real email and using no live payment credentials.
+4. **Apply updates on staging**, one logical batch at a time, so you can tell which update caused a problem.
+5. **Test the critical path** on staging.
+6. **Take a fresh live backup immediately before the push**, especially if any database tables will be overwritten.
+7. **Push to live**, files first where you can, and **re-test the live critical path straight away.**
+8. **If something breaks, roll back** by restoring the pre-push backup set from step 6.
+9. **Only then** delete or refresh old staging copies, and write down what changed and when.
+
+A note on step 8: rollback means **restoring the backup you took before the change**, not installing an older version of WordPress over the top. WordPress.org says rolling core back is "usually not recommended", because newer versions often contain security fixes and the database structure may have changed. Without a full backup made before the attempt, it says, "a successful rollback is near impossible."
+
+And in South Africa: **don't start step 6 or 7 if you may not be able to finish step 8.**
+
+<figure className="my-8">
+  <img
+    src="/images/wordpress-backups-staging-small-team-deployment-safety-2026-deploy-checklist.png"
+    alt="Printable nine-step WordPress update and deploy checklist, from confirming backups to rolling back from the pre-push backup."
+    width="2400"
+    height="2456"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+[Download the printable deploy checklist (PDF)](/images/wordpress-backups-staging-small-team-deployment-safety-2026-deploy-checklist-a4.pdf)
+
+## Two Scenarios the System Is Built For
+
+### A plugin or theme update takes the site down
+
+This is the everyday case. With staging in place, most bad updates break the copy, not your live site, and you fix the conflict there. If a problem still reaches production, follow step 8: restore the pre-update backup set, confirm the site is back, and then work out the conflict on staging. "Never update" is not a safe alternative: Patchstack's figures show that most new vulnerabilities are in plugins, and that heavily exploited ones are often attacked within hours.
+
+### Ransomware, a hack, or a wiped account
+
+This is the case the offline copy exists for.
+
+1. **Isolate.** Change passwords on the hosting account, WordPress administrators, the database and the backup storage, and take the site offline if it is spreading malware.
+2. **Restore from a copy the attacker could not reach** — the offsite or offline one. Host backups in the same account may have been deleted or may contain the compromise.
+3. **Scan before you restore**, as the NCSC advises, and pick a backup from before the compromise. This is where keeping several weeks of versions pays off.
+4. **Re-test, then update everything** before reopening the site.
+5. **Ask the POPIA question.** If customer, user or form data may have been accessed, getting the site back is not the end of the job.
+
+CISA and the NCSC both treat tested, offline, encrypted backups as the core of ransomware recovery. Paying a ransom should not be your plan.
+
+## POPIA: Your Backups Hold People's Information Too
+
+A WordPress backup usually contains personal information: user accounts, comments, form entries, newsletter lists and, on shops, customers and orders. The [Protection of Personal Information Act](https://inforegulator.org.za/wp-content/uploads/2025/08/PROTECTION-OF-PERSONAL-INFORMATION-ACT-4-OF-2013.pdf) applies to that information whether it sits on the live site or in a backup file. In plain terms (this is not legal advice):
+
+- **Section 19** requires appropriate, reasonable technical and organisational measures to prevent loss of, damage to or unlawful access to personal information — including identifying foreseeable risks and **regularly verifying** that your safeguards work. A scheduled restore test is part of that, not just an IT nicety.
+- **Section 21** covers operators: if your host or backup provider processes personal information for you, there should be a written agreement requiring those safeguards, and they must tell you immediately if they believe personal information has been accessed by someone unauthorised.
+- **Section 22** requires you to notify the Information Regulator and, in most cases, the affected people as soon as reasonably possible when there are reasonable grounds to believe personal information has been accessed or acquired without authorisation. The Regulator's [fact sheet on security compromises](https://www.inforegulator.org.za/wp-content/uploads/2025/08/Fact-Sheet-on-security-compromises-2.pdf) says there is no "low risk" exemption, and since 1 April 2025 reports must go through its [eServices portal](https://eservices.inforegulator.org.za/compromises/default.aspx) rather than by email.
+
+The practical point: **restoring the site does not, by itself, close a data breach.** Encrypted, access-controlled, tested backups help you meet section 19. They don't replace notification under section 22. If you are unsure whether an incident needs reporting, speak to your Information Officer or a legal practitioner.
+
+## A Setup You Can Finish This Month
+
+You don't need a big project. One focused week is enough:
+
+- **Day 1 — Inventory.** List what the site holds: pages, forms, users, newsletter sign-ups, orders. Note who has administrator access to WordPress, the host and any backup storage.
+- **Day 2 — Backups.** Turn on scheduled database-and-files backups to an offsite destination. Download one complete backup set and store it somewhere not permanently connected.
+- **Day 3 — Staging.** Enable your host's staging feature or build a staging subdomain, then lock it down: environment type, access control, no real email, no cron, sandbox payments.
+- **Day 4 — Restore test.** Restore your latest backup onto staging and time it. Write the steps down.
+- **Day 5 — First safe update.** Write your copy of the deploy checklist and run your next round of updates through staging.
+
+After that, put a monthly restore test and a monthly offline copy on the calendar. If the site feels slow after a restore or a round of updates, our [WordPress speed guide for small teams](/blog/wordpress-speed-optimization-2026-small-teams) covers how to check.
+
+<div className="my-10">
+  <div role="heading" aria-level="2" className="mb-6 text-2xl font-bold text-[var(--text-primary)]">Frequently Asked Questions</div>
+  <div className="divide-y divide-[var(--border)] rounded-xl border border-[var(--border)] bg-[var(--surface-1)] overflow-hidden">
+    <details className="group p-5 summary-marker-hide">
+      <summary className="flex cursor-pointer items-center justify-between font-bold text-[var(--text-primary)] outline-none list-none">
+        <span>Is my host's backup enough?</span>
+        <span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-[var(--brand)]">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </summary>
+      <p className="mt-4 text-sm text-[var(--text-secondary)] leading-relaxed prose-p:my-0">Not on its own. It is a useful copy, but it usually sits on the same provider's infrastructure, it may only be kept for a couple of weeks, and South African hosts such as xneelo and Afrihost say in their own help pages that you should keep your own copy. Treat the host backup as one of your three copies, not all of them.</p>
+    </details>
+    <details className="group p-5 summary-marker-hide">
+      <summary className="flex cursor-pointer items-center justify-between font-bold text-[var(--text-primary)] outline-none list-none">
+        <span>If I export the database, do I still need to back up the files?</span>
+        <span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-[var(--brand)]">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </summary>
+      <p className="mt-4 text-sm text-[var(--text-secondary)] leading-relaxed prose-p:my-0">Yes. The database holds posts, settings, users and orders, but your theme, plugins and uploaded images and documents live in the files. WordPress.org treats the two as separate parts that both need backing up. Take them at about the same time and keep them together as one backup set.</p>
+    </details>
+    <details className="group p-5 summary-marker-hide">
+      <summary className="flex cursor-pointer items-center justify-between font-bold text-[var(--text-primary)] outline-none list-none">
+        <span>How often should a small team back up WordPress?</span>
+        <span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-[var(--brand)]">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </summary>
+      <p className="mt-4 text-sm text-[var(--text-secondary)] leading-relaxed prose-p:my-0">Decide how much recent work you can afford to lose (your recovery point). WordPress.org suggests at least weekly for quieter sites and daily for busy ones. Shops, booking sites and membership sites often need more frequent or real-time backups. Keep several versions going back weeks, not a single copy that overwrites itself.</p>
+    </details>
+    <details className="group p-5 summary-marker-hide">
+      <summary className="flex cursor-pointer items-center justify-between font-bold text-[var(--text-primary)] outline-none list-none">
+        <span>How often should we test a restore?</span>
+        <span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-[var(--brand)]">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </summary>
+      <p className="mt-4 text-sm text-[var(--text-secondary)] leading-relaxed prose-p:my-0">At least quarterly, and monthly if the site takes orders or bookings. Restore onto staging or a throwaway copy, check that pages, images, forms and orders come back, and record how long it took. CISA recommends being able to roll data back at least seven days.</p>
+    </details>
+    <details className="group p-5 summary-marker-hide">
+      <summary className="flex cursor-pointer items-center justify-between font-bold text-[var(--text-primary)] outline-none list-none">
+        <span>What is the difference between staging and a backup?</span>
+        <span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-[var(--brand)]">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </summary>
+      <p className="mt-4 text-sm text-[var(--text-secondary)] leading-relaxed prose-p:my-0">Staging is a private copy of the site where you test changes before they go live. A backup is a stored copy you use to put the site back after something goes wrong. You need both: staging catches most bad updates, and the backup is your undo when something still gets through.</p>
+    </details>
+    <details className="group p-5 summary-marker-hide">
+      <summary className="flex cursor-pointer items-center justify-between font-bold text-[var(--text-primary)] outline-none list-none">
+        <span>If we restore the site after a hack, are we done under POPIA?</span>
+        <span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-[var(--brand)]">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </summary>
+      <p className="mt-4 text-sm text-[var(--text-secondary)] leading-relaxed prose-p:my-0">Not necessarily. If there are reasonable grounds to believe personal information was accessed or acquired by someone unauthorised, section 22 of POPIA requires notifying the Information Regulator and affected people as soon as reasonably possible, through the Regulator's eServices portal. This is a plain-language summary, not legal advice.</p>
+    </details>
+  </div>
+</div>
+
+## What to Do Next
+
+1. Check what your host actually backs up, how long it keeps it, and whether it offers staging.
+2. Add an **offsite** backup and an **offline** copy so you have three copies, with one out of reach.
+3. **Restore a backup onto a test copy this week** and time it.
+4. Set up staging and lock it down.
+5. Run your next update through the checklist, with a fresh backup before the push.
+
+A safety system is not a plugin you install. It is a tested backup, a staging step and a rollback you have already practised. If you are still choosing where to host, start with our [guide to choosing a WordPress hosting plan](/blog/how-to-choose-wordpress-hosting-plan-2026), then come back to the checklist.
