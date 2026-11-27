@@ -1,0 +1,301 @@
+---
+title: 'Web Hosting vs Email Hosting: Why Small Businesses Should Treat Them Separately'
+date: '2026-11-27'
+lastmod: '2026-11-26'
+summary: 'Why your website and your email are separate services, how bundling them causes outages and lockouts, when a bundle is fine, and how to separate them without losing mail.'
+tags: ['web hosting', 'email hosting', 'professional email', 'dns', 'mx records', 'domain names', 'small business', 'south-africa', '2026']
+image: '/images/web-hosting-vs-email-hosting-small-business-2026.png'
+author: 'Nkululeko Nkosi'
+---
+
+Most small businesses buy their website and their email in the same place, on the same invoice, often on the same afternoon. The hosting package includes mailboxes, the web designer sets up info@ while building the site, and from then on the two feel like one thing.
+
+They are not one thing. They do different jobs, fail in different ways and are judged by different audiences. Visitors and search engines judge your website. Gmail, Outlook and every other mail server judge your email, and they decide whether your quote lands in the inbox, in spam, or nowhere.
+
+The common mistake is treating them as one purchase, and you usually find out at a bad moment. You move to a new web host and email stops arriving. A hacked plugin gets the shared server blocklisted and your invoices bounce. Or the person who set everything up stops answering the phone, and nobody has the domain login.
+
+This guide explains how the pieces fit together, why it usually pays to separate them, when a bundle is fine, and how to split them without losing a single message. It sits between our [guide to choosing professional email](/blog/how-to-choose-professional-email-small-business-2026) and our [guide to choosing a WordPress hosting plan](/blog/how-to-choose-wordpress-hosting-plan-2026), and it focuses on where one service ends and the other begins.
+
+I'm Nkululeko Nkosi, known as Leko. I run Okel Dijital in Durban and edit Hub Central.
+
+*Hub Central has no affiliate relationships with any host or email provider mentioned here. Host policies and provider documentation were checked on 26 November 2026 and can change. Check your provider's current terms.*
+
+<MidArticleAd />
+
+## The Short Version
+
+- **Your domain, your DNS, your website and your email are four separate services**, even when one company sells you all four.
+- **Your MX records decide where your email goes, not your web host.** If you change who controls your DNS, you can break email without touching a mailbox.
+- **On shared hosting, bundled mailboxes usually share the website's account and server.** They take on its sending limits and its server reputation, and they suffer when the site is hacked.
+- **Register the domain in the business's name**, and keep the registrar login and recovery details under the business's control.
+- **Use dedicated email hosting for people's mailboxes.** Send website email (forms, orders, password resets) through an authenticated service, not the web server's default mail function.
+- **A bundle can be fine** for a very small, low-volume business, as long as you know where your DNS lives and have a written exit plan.
+
+<figure className="my-8">
+  <img
+    src="/images/web-hosting-vs-email-hosting-small-business-2026-six-cards.png"
+    alt="Six cards summarising the article: four separate services, MX records route email, shared hosting shares problems, own your domain, dedicated email plus authenticated website sending, bundles need an exit plan."
+    width="2400"
+    height="2312"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+## Four Services That Look Like One
+
+ICANN, which coordinates the domain name system, explains it with a street-address comparison. A domain name is like a street address for post: "there must still be a building or post office box at the street address for delivering letters or packages." You still need "services like web-hosting or email" before the name does anything ([ICANN FAQ](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en)).
+
+So behind every business domain there are four jobs.
+
+### 1. Domain registration
+
+This is your right to use the name, renewed every year or few years through a registrar. The important question is **who the registrant is**. ICANN warns that if a developer or other third party registered the name for you, "they may have registered the domain name using their own contact details (even if you have paid them to register and manage the domain name)". You may then need proof of payment to show the registrar that the business is the rightful holder.
+
+### 2. DNS
+
+DNS is the domain's address book. Your **nameservers** decide which company's address book counts. Inside it:
+
+- **A, AAAA and CNAME records** point visitors to your website.
+- **MX records** tell other mail servers where to deliver email for your domain.
+- **TXT records** hold email authentication (SPF, DKIM, DMARC) and the verification codes services ask you to add.
+
+### 3. Web hosting
+
+This is the server that runs your website: WordPress, the shop, the files and the database. You judge it on speed, security, backups and support for your software. Our [WordPress hosting plan guide](/blog/how-to-choose-wordpress-hosting-plan-2026) covers that decision.
+
+### 4. Email hosting
+
+These are the mailboxes your team uses every day: storage, spam filtering, sending, webmail and phone apps, shared calendars and account security. You judge it on deliverability, security, admin tools and how easily you can move away. Our [professional email guide](/blog/how-to-choose-professional-email-small-business-2026) covers that decision.
+
+A typical shared hosting package can bundle all four. The host registers your domain and runs its DNS on its own nameservers. Your website and your mailboxes live on the same hosting account. That is convenient, and the bundle itself is not the problem. **The problem is forgetting that it is a bundle.**
+
+<figure className="my-8">
+  <img
+    src="/images/web-hosting-vs-email-hosting-small-business-2026-four-layers.png"
+    alt="Diagram showing how a domain's DNS points website records to a web host and MX records to an email host, in a bundled setup and a separated setup."
+    width="2400"
+    height="2484"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+## The Decision Error: Choosing Email by Accident
+
+Most small businesses never choose an email host. They inherit one from the web hosting package. You can usually spot this:
+
+- Nobody can say where the MX records point, or who can change them.
+- The mailboxes and the website share one control-panel login.
+- Form emails from the website and staff email go out through the same server.
+- The registrar account's recovery email is an address **on the same domain**. If the domain lapses or DNS breaks, the password-reset email never arrives.
+
+None of that matters until something changes. Here are the three ways it usually goes wrong.
+
+### Failure 1: Moving your website breaks your email
+
+When you change web hosts, the simplest-looking step is pointing your domain's nameservers to the new company. That hands the new company your whole address book, **including your MX records**.
+
+xneelo's help centre says this plainly. Changing nameservers to a website builder gives that company "control over your DNS for website and email". It also warns: "If the nameservers are updated before the mail records are correctly pointed to xneelo, mail services will be disrupted" ([xneelo](https://xneelo.co.za/help-centre/domains/how-to-point-your-website-to-wix/)). Nameserver changes then take time to spread. xneelo says propagation "typically takes 24 to 48 hours" ([xneelo](https://xneelo.co.za/help-centre/domains/update-name-servers/)), so a mistake can take a day or two to show up and a day or two to fix.
+
+There is a second trap. If your mailboxes live on the old hosting account, **cancelling that account also cancels your email** unless you moved it first.
+
+It works in the other direction too, and that is the good news. On a separated setup, xneelo's own guide to keeping your website with it while moving email to Google Workspace says: "Changing your MX records affects email only. Your website's A, AAAA or CNAME records do not need to be changed" ([xneelo](https://xneelo.co.za/help-centre/email/moving-your-email-to-google-workspace/)). Separate services can change separately.
+
+### Failure 2: Your website's problems become your email's problems
+
+On shared hosting, bundled mailboxes often sit on the same hosting account, and often the same server, as your website. They share three things you would rather they didn't.
+
+**Sending limits.** Shared hosts cap outgoing mail to protect the server:
+
+- xneelo's shared servers allow mail to **500 recipients within one hour**. If you go over, xneelo will "remove the offending emails from the mail queue and suspend the account", whether or not the mail is spam. Its reason: "Processing large amounts of mail adversely affect web server performance" ([xneelo](https://xneelo.co.za/help-centre/email/i-have-a-mailing-list-how-many-emails-can-i-send-out-on-my-web-hosting-account/)).
+- HOSTAFRICA's guide to changing a mailbox's send limit gives **500** as "the maximum value for shared hosting" ([HOSTAFRICA](https://help.hostafrica.com/article/how-to-change-the-email-sending-limit-in-directadmin)).
+- Afrihost says: "Afrihost servers do not allow bulk emails" ([Afrihost](https://help.afrihost.com/entry/understanding-email-error-messages/)).
+
+These are reasonable rules for a shared server. Just remember that your staff, your contact forms, your shop's order emails and any newsletter plugin can all be drawing on the same allowance.
+
+**Server reputation.** Mail servers decide what to accept partly on the reputation of the server that sends it. On a shared server, that reputation is shared too. xneelo puts it bluntly when describing the fallout from compromised sites: "Blacklisting of servers results in mail delivery failures for all domains hosted on the server" ([xneelo](https://xneelo.co.za/help-centre/email/what-to-do-if-your-mailbox-has-been-compromised/)). An outdated plugin on your site, or on someone else's, can stop your invoices from arriving. Our [WordPress backups and staging guide](/blog/wordpress-backups-staging-small-team-deployment-safety-2026) covers the update discipline that keeps your own site from being the cause.
+
+**Blast radius.** If someone gets into the hosting account, they can reach both the website and the mailboxes. If the account is suspended for abuse or an unpaid invoice, both go dark together.
+
+### Failure 3: Nobody owns the keys
+
+The third failure is about access, not technology. The developer registered the domain under their own details. The registrar login lives in one person's personal inbox. Nobody knows the DNS password. When that person leaves, or a relationship ends badly, you can't change the website or the email until you get control back.
+
+ICANN's advice is direct: "Check with your registrar to see who the Registrant of record is for your domain name." If it is not the business, fix that before anything else ([ICANN FAQ](https://www.icann.org/resources/pages/faqs-84-2012-02-25-en)).
+
+## Website Email Is a Third Thing
+
+Separating "web" from "email" exposes a third kind of mail that most small businesses forget: **email your website sends by itself**. That includes contact-form notifications, shop order confirmations, booking reminders and password resets.
+
+By default, WordPress sends this through its `wp_mail()` function, which WordPress's own documentation describes as working "similar to PHP's mail function". It also warns that "A true return value does not automatically mean that the user received the email successfully" ([WordPress developer reference](https://developer.wordpress.org/reference/functions/wp_mail/)). In other words, the form can say "sent" while the message never arrives.
+
+Mailbox providers have also raised the bar for everyone who sends:
+
+- **Gmail:** since 1 February 2024, all senders to Gmail accounts must set up SPF or DKIM, have valid forward and reverse DNS, use TLS and keep reported spam rates below 0.3%. Senders of more than 5,000 messages a day must also have SPF, DKIM and DMARC ([Google's email sender guidelines](https://support.google.com/mail/answer/81126?hl=en)).
+- **Outlook.com:** Microsoft announced that domains sending more than 5,000 messages a day must pass SPF, DKIM and DMARC. An April 2025 update to that announcement says mail from non-compliant high-volume domains is rejected from 5 May 2025, although other parts of the same page, and Outlook's postmaster policy, still describe sending it to Junk first ([Microsoft](https://techcommunity.microsoft.com/blog/microsoftthreatprotectionblog/strengthening-email-ecosystem-outlook%E2%80%99s-new-requirements-for-high%E2%80%90volume-senders/4399730)).
+
+A small business won't hit 5,000 a day, but the baseline applies to you: your domain has to vouch for every server that sends as it. In practice:
+
+- **Send website email through an authenticated route.** Use SMTP from a mailbox at your email provider, or a transactional email service, and make sure your SPF and DKIM cover it.
+- **Send form notifications from your own address.** Put the visitor's address in Reply-To. A message "from" a visitor's Gmail address, sent by your server, is exactly what DMARC is designed to catch.
+- **Send newsletters through a proper bulk email service**, never from the web server or your staff mailboxes.
+
+Our [professional email guide](/blog/how-to-choose-professional-email-small-business-2026) explains SPF, DKIM and DMARC step by step.
+
+## When Keeping Them Together Is Fine
+
+Separation is not a religion. A bundle can be the sensible choice when **all** of these are true:
+
+- You are one to three people, sending a modest number of emails a day.
+- The website is a brochure site with no shop, bookings or membership.
+- You don't send newsletters from the hosting account.
+- The domain is registered in the business's name, and you hold the registrar and DNS logins.
+- You know where your MX records point and how to export your mail over IMAP.
+- You have written down what you would do if you changed host.
+
+If any of those is false, separating is usually worth the effort. Dedicated email hosting costs money per user. Our email guide has a [dated cost comparison](/blog/how-to-choose-professional-email-small-business-2026) so you can see what that means for your headcount.
+
+## A Simple Way to Decide
+
+<div className="my-8 overflow-hidden rounded-xl border border-[var(--border)] shadow-sm">
+  <div className="overflow-x-auto">
+    <table className="min-w-full text-sm">
+      <caption className="bg-[var(--surface-1)] p-3 text-left text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] border-b border-[var(--border)]">Bundled or separated: a sensible setup for your situation</caption>
+      <thead className="bg-[var(--surface-1)] text-[var(--text-primary)]">
+        <tr>
+          <th className="border-b border-[var(--border)] px-4 py-3 text-left font-bold">Your situation</th>
+          <th className="border-b border-[var(--border)] px-4 py-3 text-left font-bold">A sensible setup</th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-[var(--border)] bg-[var(--background)]">
+        <tr className="hover:bg-[var(--surface-1)]/50 transition-colors">
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Sole trader, brochure site, a few emails a day</td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Bundled email can work. Own the domain, write down your DNS records, and know how you would move.</td>
+        </tr>
+        <tr className="hover:bg-[var(--surface-1)]/50 transition-colors">
+          <td className="px-4 py-3 text-[var(--text-secondary)]">A team that lives in email and shares calendars</td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Dedicated email hosting, with web hosting chosen on its own merits.</td>
+        </tr>
+        <tr className="hover:bg-[var(--surface-1)]/50 transition-colors">
+          <td className="px-4 py-3 text-[var(--text-secondary)]">A site with a shop, bookings or member logins</td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Dedicated email for people, plus authenticated sending for the site's own emails.</td>
+        </tr>
+        <tr className="hover:bg-[var(--surface-1)]/50 transition-colors">
+          <td className="px-4 py-3 text-[var(--text-secondary)]">You send newsletters or campaigns</td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">A bulk email service. Never the shared web server.</td>
+        </tr>
+        <tr className="hover:bg-[var(--surface-1)]/50 transition-colors">
+          <td className="px-4 py-3 text-[var(--text-secondary)]">A redesign or host move is planned</td>
+          <td className="px-4 py-3 text-[var(--text-secondary)]">Separate email first, then move the website.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+## How to Separate Them Without Losing Mail
+
+You can do this in a week without anyone noticing, as long as you change things in the right order.
+
+1. **Take an inventory.** Note who the registrant is, where the nameservers point, and a full copy of the DNS records (a screenshot is fine). List every mailbox, alias, forwarder and autoresponder. Then list everything that sends email as your domain: the website, the shop, invoicing, your CRM.
+2. **Secure the domain first.** Make the business the registrant. Turn on multi-factor authentication for the registrar account, and set its recovery email to an address that is **not** on the same domain.
+3. **Choose the email provider.** Our [email guide](/blog/how-to-choose-professional-email-small-business-2026) and [email hosting comparison](/blog/best-professional-email-hosting-small-business-2026) cover the options.
+4. **Set up before you switch.** Verify the domain (usually a TXT record), then create every mailbox, alias and group. Verification on its own changes nothing: xneelo notes that "Domain verification itself does not redirect your email. Email only starts routing to Google once the MX records are changed" ([xneelo](https://xneelo.co.za/help-centre/email/moving-your-email-to-google-workspace/)).
+5. **Move the old mail.** Google Workspace has a data import tool for IMAP accounts ([Google](https://knowledge.workspace.google.com/admin/migrate/import-email-with-the-data-import-tool)). Microsoft 365's IMAP migration moves mail folders only: it "doesn't migrate contacts, calendar items, or tasks" ([Microsoft](https://learn.microsoft.com/en-us/exchange/mailbox-migration/migrating-imap-mailboxes/migrating-imap-mailboxes)), so export those separately.
+6. **Switch the MX records and update authentication.** Use the MX values your new provider shows you. Update SPF to include the new provider, turn on DKIM, and add DMARC, starting with a monitoring policy. Google says MX changes can take up to 72 hours to take effect ([Google](https://knowledge.workspace.google.com/admin/domains/set-up-mx-records-for-google-workspace)).
+7. **Fix the website's email.** Point forms, the shop and password resets at authenticated SMTP or a transactional service, then send a test from each one.
+8. **Keep the old mailboxes for a while.** Leave them active until you have checked the migration and new mail is clearly arriving at the new provider. Then remove them.
+9. **Write it down.** Record the registrar, DNS host, web host, email host and who holds each login. Next time, you or your successor will need that page.
+
+The next time you change web host, **don't hand over your nameservers unless you have to.** Point the website records at the new host instead. If you do move nameservers, recreate every MX and TXT record at the new DNS host **before** switching.
+
+<figure className="my-8">
+  <img
+    src="/images/web-hosting-vs-email-hosting-small-business-2026-separation-checklist.png"
+    alt="Nine-step checklist for separating email hosting from web hosting, from taking an inventory to writing down who holds each login."
+    width="2400"
+    height="2784"
+    loading="lazy"
+    className="mx-auto block h-auto w-full rounded-xl border border-[var(--border)]"
+  />
+</figure>
+
+[Download the printable separation checklist (PDF)](/images/web-hosting-vs-email-hosting-small-business-2026-separation-checklist-a4.pdf)
+
+## South African Notes
+
+- **Billing.** Local hosts bill in rand. The big email suites usually list dollar prices, with rand pricing through resellers. Our email guide's [South Africa checklist](/blog/how-to-choose-professional-email-small-business-2026) covers rand, VAT and the questions to ask a reseller.
+- **POPIA.** Mailboxes are full of personal information. Wherever your email lives, the Protection of Personal Information Act expects reasonable security safeguards and a written agreement with providers that process data for you. Both earlier guides cover this: the POPIA box in our [email guide](/blog/how-to-choose-professional-email-small-business-2026) and the POPIA section of our [backups guide](/blog/wordpress-backups-staging-small-team-deployment-safety-2026). This is not legal advice.
+- **Timing.** DNS changes take hours to days to spread, so switch MX records early in a quiet week, not on the day before a deadline.
+
+<div className="my-10">
+  <div role="heading" aria-level="2" className="mb-6 text-2xl font-bold text-[var(--text-primary)]">Frequently Asked Questions</div>
+  <div className="divide-y divide-[var(--border)] rounded-xl border border-[var(--border)] bg-[var(--surface-1)] overflow-hidden">
+    <details className="group p-5 summary-marker-hide">
+      <summary className="flex cursor-pointer items-center justify-between font-bold text-[var(--text-primary)] outline-none list-none">
+        <span>Can my website be with one company and my email with another?</span>
+        <span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-[var(--brand)]">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </summary>
+      <p className="mt-4 text-sm text-[var(--text-secondary)] leading-relaxed prose-p:my-0">Yes. Your MX records send email to your email provider, and your website records send visitors to your web host. South African hosts document exactly this setup. Changing the MX records affects email only.</p>
+    </details>
+    <details className="group p-5 summary-marker-hide">
+      <summary className="flex cursor-pointer items-center justify-between font-bold text-[var(--text-primary)] outline-none list-none">
+        <span>Will changing my web host delete my email?</span>
+        <span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-[var(--brand)]">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </summary>
+      <p className="mt-4 text-sm text-[var(--text-secondary)] leading-relaxed prose-p:my-0">It can. If your mailboxes live on the old hosting account, cancelling that account removes them. If you point your nameservers at the new host before its MX records are set up, incoming mail can be disrupted for a day or more. Move or protect email first, then move the website.</p>
+    </details>
+    <details className="group p-5 summary-marker-hide">
+      <summary className="flex cursor-pointer items-center justify-between font-bold text-[var(--text-primary)] outline-none list-none">
+        <span>Isn't the email that comes with my hosting free?</span>
+        <span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-[var(--brand)]">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </summary>
+      <p className="mt-4 text-sm text-[var(--text-secondary)] leading-relaxed prose-p:my-0">It is included in the price, which is not the same as free. It shares the hosting account's sending limits and the server's reputation, and it goes down with the account. For a very small business that trade-off can be fine. For a team that depends on email, it usually isn't.</p>
+    </details>
+    <details className="group p-5 summary-marker-hide">
+      <summary className="flex cursor-pointer items-center justify-between font-bold text-[var(--text-primary)] outline-none list-none">
+        <span>Do my website's contact forms need a separate email service?</span>
+        <span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-[var(--brand)]">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </summary>
+      <p className="mt-4 text-sm text-[var(--text-secondary)] leading-relaxed prose-p:my-0">They need an authenticated sending route, not necessarily a new company. Authenticated SMTP through your email provider is enough for most small sites. A shop or booking site with higher volume is often better served by a transactional email service. Either way, your SPF and DKIM records must cover whatever sends as your domain.</p>
+    </details>
+    <details className="group p-5 summary-marker-hide">
+      <summary className="flex cursor-pointer items-center justify-between font-bold text-[var(--text-primary)] outline-none list-none">
+        <span>What is the difference between nameservers and MX records?</span>
+        <span className="ml-4 shrink-0 transition-transform duration-200 group-open:rotate-180 text-[var(--brand)]">
+          <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </span>
+      </summary>
+      <p className="mt-4 text-sm text-[var(--text-secondary)] leading-relaxed prose-p:my-0">Nameservers decide which company's DNS address book is used for your domain. MX records are entries in that address book that say where email should be delivered. Changing nameservers replaces the whole address book, MX records included. Changing MX records moves email only.</p>
+    </details>
+  </div>
+</div>
+
+## What to Do Next
+
+1. Check with your registrar **who the registrant of record is**, and where your nameservers point.
+2. Write down **where your MX records point** and who can change them.
+3. Find out **how your website sends email**, and send a test from every form.
+4. Use the table above to decide whether a bundle still suits you.
+5. If you are separating, follow the nine steps in order. If you are staying bundled, write your exit plan now, while nothing is broken.
+
+Your website and your email will both change hands one day: a new host, a new provider, a new person in charge. Keeping them separate means one change doesn't take the other down with it. If you are reviewing your web hosting at the same time, start with our guide to [choosing a WordPress hosting plan](/blog/how-to-choose-wordpress-hosting-plan-2026). If you are about to move, our [backups and staging guide](/blog/wordpress-backups-staging-small-team-deployment-safety-2026) covers how to do it safely.
